@@ -1,0 +1,16 @@
+{
+  "name": "Creto",
+  "version": "0.0.1",
+  "description": "Real time web chat",
+  "dependencies": {
+    "socket.io": "~1.3.7",
+    "express": "latest",
+    "jade": "latest",
+    "swig": "~1.4.2",
+    "xss-filters": "~1.2.6",
+    "multer": "~1.1.0"
+  },
+  "author": "Andrey-Tkachev",
+  "url" : "",
+  "email" : "tka4.andr@yandex.ru"
+}

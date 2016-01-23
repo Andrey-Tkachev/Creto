@@ -1,0 +1,80 @@
+ы{% extends 'layout.html' %}
+
+{% block stylesheet_links %}
+  {% parent %}
+  <link type="text/css" rel="stylesheet" href="css/general.css"  media="screen,projection"/>
+  <link type="text/css" rel="stylesheet" href="css/registration_stylesheets.css"  media="screen,projection"/>
+{% endblock %}
+
+{% block scripts_links %}
+  {% parent %}
+  <script defer type="text/javascript" src="js/registration.js"></script>
+{% endblock %}
+
+
+
+<!-- *************************** -->
+<!-- ********* NAV bar ********* -->
+<!-- *************************** -->
+
+{% block user_page_nav_bar %}
+  {% parent %}
+  {% include "nav_bars/simple_nav_bar.html" %}
+{% endblock %}
+
+<!-- *************************** -->
+<!-- ****** Content blok ******* -->
+<!-- *************************** -->
+
+{% block content %}
+      <div id="registration-form-container" class="row container">
+        <div class="center">
+            <h2 class=''>Create an account</h2>
+        </div>
+        <div id='reg-form' action="#" class="col s12 ">
+          <div class='section'>
+            <h5  class=''> Personal information </h5>
+            <div class="row">
+              <div id='first-name-block' class="input-field col s6">
+                <input id="first_name" type="text" onkeyup="checkNameValid();"class="validate">
+                <label for="first_name">First Name</label>
+              </div>
+              <div id='last-name-block' onkeyup="checkLastNameValid();" class="input-field col s6">
+                <input id="last_name" type="text" class="validate">
+                <label for="last_name">Last Name</label>
+              </div>
+            </div>
+          </div>
+
+          <div class='section'>
+            <h5 class=' blue-grey-text  text-darken-3'>  Email Address </h5>
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="email" type="email" onkeyup="checkEmailValidity();" class="validate">
+                <label for="email" data-error="Not correct email" data-success="OK">Your e-mail</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <h5 class=''>Create a password</h5>
+            <div class="row">
+              <div class="input-field col s5">
+                <input id="password" type="password" onkeyup="checkPasswordValid();" class="validate">
+                <label for="password">Password</label>
+              </div>
+              <div class="col s2">
+                <h5 class='center-align blue-grey-text  text-darken-1'> and </h5>
+              </div>
+              <div class="input-field col s5">
+                <input id="password_repeat" type="password" onkeyup="checkPasswordsMatches();" class="validate">
+                <label for="password_repeat">Repeat password</label>
+              </div>
+            </div>
+          </div>
+          <div id='submit-btn-container'class="row center">
+                <button class="btn blue accent-2" id="create-account">Create Account</button>
+          </div>
+        </div>
+      </div>
+{% endblock %}

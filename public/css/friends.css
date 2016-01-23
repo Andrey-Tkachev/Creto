@@ -1,0 +1,26 @@
+.info i.active   {color: black !important;}
+.info i {color: #2B587A !important;}
+html {overflow: auto;}
+
+
+.card:hover {
+    box-shadow: 0 20px 20px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+}
+
+.tab a { color: #2B587A !important; text-decoration: none; }
+.indicator { background-color: #d6e0ea !important; text-decoration: none; }
+.tab a:hover { color: #136EAC !important; text-decoration: none; }
+.card a { color: #2B587A !important; text-decoration: none; }
+.card a:hover { color: #336EAC !important; text-decoration: none; }
+
+.info input[type=search]:focus+label i {color: black !important;}
+.info { display: inline-block;}
+
+#content { position: absolute; width: 100%; height: calc(100% - 62px); }
+	#content .wrapper { max-width: 80%;  height: calc(100%); margin-left: auto; margin-right: auto; }
+
+
+	#content .card-container { padding-top: 20px; margin-left: 0.5rem;  margin-right: 0.5rem; display: inline-block; height: 300px; max-width: 300px; z-index: 1}
+	#content .card {}
+	#content .peoples {text-align: center;}
+	#content .info {width: 100%; padding-top: 2%;}

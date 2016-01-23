@@ -1,0 +1,95 @@
+{% extends 'layout.html' %}
+
+{% block stylesheet_links %}
+  {% parent %}
+  <link type="text/css" rel="stylesheet" href="css/general.css"  media="screen,projection"/>
+  <link type="text/css" rel="stylesheet" href="css/page_edit.css"  media="screen,projection"/>
+{% endblock %}
+
+{% block scripts_links %}
+  {% parent %}
+  <script type="text/javascript" src="js/main.js" defer></script>
+  <script type="text/javascript" src="js/page_edit.js" defer></script>  
+{% endblock %}
+
+
+<!-- *************************** -->
+<!-- ********* NAV bar ********* -->
+<!-- *************************** -->
+{% block user_page_nav_bar %}
+  {% parent %}
+  {% include "nav_bars/user_nav_bar.html" %}
+{% endblock %}
+
+{% block info_nav_bar %}
+  {% parent %}
+  {% set info_message = "Profile editor" %}
+  {% include "nav_bars/info_nav_bar.html" %}
+{% endblock %}
+
+
+<!-- *************************** -->
+<!-- ****** Content blok ******* -->
+<!-- *************************** -->
+{% block content %}
+    <div id="profile_editor">
+      <div class='wrapper'>
+        <form id='editor-form'>
+          <div class='item'>
+            <div class="input-field">
+              <input id='first-name' value="{{person.first_name}}"  type="text" Onkeyup='checkNameValid()' class="validate">
+              <label class="active" for="first_name">First Name</label>
+            </div>
+          </div>
+
+          <div class='item'>
+            <div class="input-field">
+              <input id='last-name' value="{{person.last_name}}"  type="text" Onkeyup='checkLastNameValid()' class="validate">
+              <label class="active" for="last_name">First Name</label>
+            </div>
+          </div>
+
+          <div class='item'>
+              <div class="input-field">
+                <label for="birthdate" class="active">Birthdate</label>
+                <input  id='birthdate' val='{{person.birthdate}}'type="date" class="">
+
+              </div>
+          </div>
+
+          <div class='item'>
+            <div class="input-field">
+              <input id='homecity' value="{{person.homecity}}" type="text" class="validate">
+              <label class="active" for="homecity">Homecity</label>
+            </div>
+          </div>
+
+          <div class='item'>
+            <div class="input-field">
+              <select id='status-select' onChange="statusChange(this.value)">
+                <option value="None" disabled selected>None</option>
+                <option value="Married">Married</option>
+                <option value="Not married">Not married</option>
+                <option value="Actively searching">Owner of 40 cats</option>
+              </select>
+              <label for='status-select'>Status</label>
+            </div>
+          </div>
+
+          
+          <div class="item">
+            <div id='about-container' class="input-field">
+              <textarea id="about-textarea" class="materialize-textarea" length="300">{{person.about}}</textarea>
+              <label for="about-textarea">Some info about you</label>
+            </div>
+          </div>
+          <div class="item">
+            <div id='submit-btn' class='btn waves-effect waves-light' type='fake'>Save</div>
+          </div>
+        </form>
+      </div>
+        
+    </div>
+  </body>
+
+{% endblock %}

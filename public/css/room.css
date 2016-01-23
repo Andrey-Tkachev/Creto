@@ -1,0 +1,33 @@
+ #content { position: absolute; width: 100%; height: calc(100% - 62px); z-index: 0;}
+	#content .wrapper { max-width: 1930px;  height: calc(100%); margin-left: auto; margin-right: auto; }
+	.portrait .full-on-portrait-tablet .wrapper  { height: 91%; }
+	.portrait .full-on-portrait-tablet .content-row  { display:block; width: 100%; padding-right: 0; padding-left: 0; float: left;}
+	.portrait .full-on-portrait-tablet .column   { display:block; padding-right: 0px; padding-left: 0px; }
+
+#draw-content { overflow: auto; }
+#canvas-container { padding-top:  7%; }
+
+#chat-content .content-row { min-width: 295px; z-index: 0;}
+#chat-content .low { min-height: 120px !important; }
+
+.message-container {z-index: -1;}
+
+	
+#messages-row { overflow: auto; }
+#input-row { min-height: 120px !important!; }
+	#input-row .tool 	   { margin-left: 45%; margin-top: 20%; margin-bottom: 80%; } 
+	#input-row .column      { padding-top: 20px; }
+	#input-row .content-row { min-height: 120px !important; }
+	#input-row .low 		{ min-height: 120px !important; }
+
+
+p {overflow: auto;}
+p { line-heigh: 100px;}
+
+.btn-floating.tiny  { width: 1rem; height: 1rem; }
+.btn-floating.small { width: 2rem; height: 2rem; padding-right: 1rem;}
+.btn-floating.medium{ width: 3rem; height: 3rem; padding-right: 2rem;}
+.btn-floating.large { width: 4rem; height: 4rem; padding-right: 3rem;}
+
+.progress { background-color:  #326EAC;  max-width: 980px; display: inline-block;}
+.indeterminate {background-color: #226EfC;}

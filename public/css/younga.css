@@ -1,0 +1,22 @@
+.column {
+	width: 60px;
+	height: 60px;
+	border: 2px solid white;
+	border-radius: 10px;
+}
+.colored1 {
+	background-color: #1e88e5;
+	border: 2px solid #0039f5;
+}
+
+.colored0 {
+	background-color: #148525;
+	border: 2px solid #003925;
+}
+
+table {
+	display: inline-block;
+	padding-top: 6%;
+	padding-left: 10%;
+	width: 420px;
+}

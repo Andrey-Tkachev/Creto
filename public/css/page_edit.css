@@ -1,0 +1,27 @@
+input[type="tel" i], input[type="url" i], input[type="text" i] {
+    padding: 1px 0px;
+    padding-top: 1px;
+    padding-right: 0px;
+    padding-bottom: 1px;
+    padding-left: 0.2rem!important;
+}
+
+ label {
+    color: #99999e !important;
+    cursor: text !important;
+    transition: .2s ease-out !important;
+    left: 0.2rem !important;
+}
+
+.user-logo { color: #2B587A; font-size: 1.4rem; }
+
+#about-container {padding-top: 20px;}
+#about-container label.active { font-size: 0.9rem; -webkit-transform: translateY(-10%);
+                                                    transform: translateY(-10%);}
+
+
+
+#profile_editor
+   #profile_editor .item { display: block; margin-bottom: 20px; padding: 0 10px 10px; width: 100%;}
+   #profile_editor .wrapper { display: block; margin-left: auto; margin-right : auto; padding-top: 20px;  max-width: 600px; min-width: 100px;}
+   #profile_editor .btn { max-width: 150px; background-color : #346EAC !important; }

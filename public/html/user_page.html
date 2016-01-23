@@ -1,0 +1,108 @@
+{% extends 'layout.html' %}
+
+
+{% block stylesheet_links %}
+  {% parent %}
+  <link type="text/css" rel="stylesheet" href="css/general.css"  media="screen,projection"/>
+  <link type="text/css" rel="stylesheet" href="css/user_page.css"  media="screen,projection"/>
+{% endblock %}
+
+{% block scripts_links %}
+  {% parent %}
+  <script type="text/javascript" src="js/main.js" defer></script>
+  <script defer type="text/javascript" src="js/user_page.js"></script>
+{% endblock %}
+
+{% block user_page_nav_bar %}
+  {% parent %}
+  {% include "nav_bars/user_nav_bar.html" %}
+{% endblock %}
+
+{% block info_nav_bar %}
+  {% parent %}
+  {% set info_message = tperson.name %}
+  {% include "nav_bars/info_nav_bar.html" %}
+{% endblock %}
+
+{% block content %}
+	<div class="profile row">
+      <div class="left-column col s12 m4 l4"> 
+      		<div id='profile-img-container'>
+      			<form id         =  "uploadForm"
+     				  enctype    =  "multipart/form-data"
+				      action     =  "/edit/avatar"
+				      method     =  "post">
+				    <div class="file-field input-field">
+				   	  <img class="materialboxed z-depth-1 responsive-img"  src="{{tperson.images}}">
+				     {% if self %}<input id='file-input' type="file" name="userPhoto">{% endif %}
+				    </div>
+			    </form>
+			</div>
+			<div id='profile-tools'>
+				{% if self %} <div class='tool'> <a id="profile_edit_act" href="edit"><h5>Edit the page</h5></a> </div>
+				{% endif %}
+				{% if notself %}<div class='tool'> <a class='add-to-friends' name="{{tperson.id}}"id="profile_edit_act"><h5>Add to friends</h5></a> </div>
+				{% endif %}
+				<div class='profile_top_sep'>
+				</div>
+			</div>
+      </div>
+	  
+      <div class="right-column col s12 m8 l8"> 
+			<div id="profile_short" clsas='row'>
+				<div class="profile_info">
+					<div class="clear_fix ">
+				  		<div class="label fl_l">Date:</div>
+				  		<div class="labeled fl_l"><a href="">{{tperson.birthdate}}</a></div>
+					</div>
+
+					<div class="clear_fix miniblock">
+				  		<div class="label fl_l">Hometown:</div>
+				  		<div class="labeled fl_l"><a href="">{{tperson.homecity}}</a></div>
+					</div>
+
+					<div class="clear_fix miniblock">
+				  		<div class="label fl_l">Marital status:</div>
+				  		<div class="labeled fl_l"><a href="">{{tperson.status}}</a></div>
+					</div>
+
+
+					<div class="clear_fix miniblock">
+				  		<div class="label fl_l">Languages:</div>
+				  		<div class="labeled fl_l"><a href="">Русский</a>, <a href="/search?c[name]=0&amp;c[section]=people&amp;c[lang]=3">English</a></div>
+					</div>
+
+					<div class="clear_fix miniblock">
+				  		<div class="label fl_l">About:</div>
+				  		<div class="labeled fl_l"><a href="">{{tperson.about}}</a></div>
+					</div>
+
+				</div>
+			</div>
+			<div class='profile_top_sep'></div>
+			<div id='post_area' class='row'>
+				<div class="col s12 input-box">
+			    <form class=''>
+			    	<div class='row'> 
+			    		{% if self %}
+					        <div class="input-field col s12  blue-grey lighten-5 z-depth-1">
+					          <textarea id="textarea1" class="materialize-textarea"></textarea>
+					          <label for="textarea1">what's happening?</label>
+					        </div>
+				        {% endif %}
+				        {% if notself %}
+					        <div class="col s12  blue-grey lighten-4 z-depth-1">
+					          Here be dragons!
+					          Maybe...
+					          Soon..
+					        </div>
+						{% endif %}
+
+			        </div>
+			    </form>
+			    </div>
+  			</div>
+      </div>
+
+    </div>
+ {% endblock %}

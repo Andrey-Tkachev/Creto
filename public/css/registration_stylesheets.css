@@ -1,0 +1,47 @@
+html { overflow: auto;}
+
+#registration-form-container {
+	padding-top: 5%;
+}
+
+.bad-message {
+	color: #c62828 ;
+}
+
+.info {
+	width: 100%;
+}
+
+.validation-advice, .error-msg {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    border-radius: 5px;
+    height: 30px;
+    margin-bottom: 1.5rem;
+}
+
+
+
+.section {
+	display: block;
+}
+.container {
+	width: 70%;
+}
+
+#btns-container{
+	padding-top: 10%;
+	height: 200px;
+}
+
+#create-account {
+	height: 60px;
+	width: 50%;
+}
+
+#email {
+	margin-bottom: 2rem;
+}
+
+#btns-container .btn {width: 200px;}

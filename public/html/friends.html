@@ -1,0 +1,79 @@
+{% extends 'layout.html' %}
+
+
+{% block stylesheet_links%}
+  {% parent %}
+  <link type="text/css" rel="stylesheet" href="css/general.css"  media="screen,projection"/>
+  <link type="text/css" rel="stylesheet" href="css/friends.css"  media="screen,projection"/>
+{% endblock %}
+
+{% block scripts_links %}
+  {% parent %}
+  <script defer type="text/javascript" src="js/main.js" defer></script>
+  <script defer type="text/javascript" src="js/friends.js"></script>
+{% endblock %}
+
+{% block user_page_nav_bar %}
+  {% parent %}
+  {% include "nav_bars/user_nav_bar.html" %}
+{% endblock %}
+
+{% block info_nav_bar %}
+  {% parent %}
+    <nav id='info-nav' class='nav-bar info'>
+    <div id='info-nav-wrapper' class="wrapper z-depth-1">
+      <form>
+        <div class="input-field">
+          <input id="search" type="search" required>
+          <label for="search"><i class="material-icons">search</i></label>
+          <i class="material-icons">close</i>
+        </div>
+      </form>
+    </div>
+  </nav>
+{% endblock %}
+
+{% block content %}
+  <div id='content'>
+    <div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s4"><a id='all-peoples-tab' href="#all-peoples">All peoples</a></li>
+        <li class="tab col s4"><a class="active" href="#friends">Friends</a></li>
+        <li class="tab col s4"><a href="#friends-requests">Requests to friends</a></li>
+      </ul>
+    </div>
+    <div  id='content-wrapper' class="wrapper">
+      
+      <div id='all-peoples' class="peoples">
+      </div>
+
+      <div id='friends' class="peoples">
+        <div class='info center'>
+          <h4> You have no friends( </h4>
+          <h4> <a id='find-friends-btn'> But you can always find them </a></h4>
+        </div>
+      </div>
+
+      <div id='friends-requests' class="peoples">
+      </div>
+      
+    </div>
+  </div>
+{% endblock %}
+
+<div class='card-container'>
+        <div class="card">
+          <div class="card-image waves-effect waves-block waves-light">
+            <img class="activator" src="{{ person.images }}">
+          </div>
+          <div class="card-content">
+            <span class="card-title">{{person.name}}<i class="material-icons right">more_vert</i></span>
+            <p><a class='activator'>About</a></p>
+            <p><a href="#">Write message</a></p>
+          </div>
+          <div class="card-reveal">
+            <span class="card-title">{{person.name}}<i class="material-icons right">close</i></span>
+            <p>{{person.about}}</p>
+          </div>
+        </div>
+</div>

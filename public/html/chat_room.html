@@ -1,0 +1,133 @@
+{% extends 'layout.html' %}
+
+{% block stylesheet_links %}
+  {% parent %}
+  <link type="text/css" rel="stylesheet" href="css/general.css"  media="screen,projection"/>
+  <link type="text/css" rel="stylesheet" href="css/room.css"  media="screen,projection"/>
+{% endblock %}
+
+{% block scripts_links %}
+  {% parent %}
+  <script type="text/javascript" src='/js/jsxcompressor.min.js' defer></script>
+  <script type="text/javascript" src="/js/socket.io.js" defer></script>
+   <script type="text/javascript" src="js/main.js" defer></script>
+  <script type="text/javascript" src="js/chat-content.js" defer></script>
+  <script type="text/javascript" src="js/art-content.js" defer></script>
+{% endblock %}
+
+<!-- *************************** -->
+<!-- ********* NAV bar ********* -->
+<!-- *************************** -->
+
+{% block user_page_nav_bar %}
+  {% parent %}
+  {% include "nav_bars/user_nav_bar.html" %}
+{% endblock %}
+
+
+      
+<!-- *************************** -->
+<!-- ******* NAV bar end ******* -->
+<!-- *************************** -->
+
+<!-- *************************** -->
+<!-- ****** Content blok ******* -->
+<!-- *************************** -->
+
+{% block content %}
+
+      <div id='content'>
+        <div class='wrapper'>
+
+          <div class='content-row full'>
+
+            <div id='draw-content' class='column large  full-on-landscape-tablet hide-on-portrait-tablet'> 
+              
+                <div id='canvas-container' class='content-container'>
+                  <div class="progress">  
+                        <div class="indeterminate blue"></div>
+                      </div>
+                  <canvas id="art_canvas" width='980' height='620' class='z-depth-2'></canvas> 
+                  <div id='tools-container' class='content-containe'>
+                  
+                    <div class='wrapper'>
+                      <div class="fixed-action-btn vertical tool">
+                        <a id='color-btn' class="btn-floating btn-large ffffff">
+                          <i class="large material-icons">invert_colors</i>
+                        </a>
+                        <ul>
+                          <li><a id='e53935' class="change-color-btn btn-floating red"><i class="material-icons"></i></a></li>
+                          <li><a id='ffeb3b' class="change-color-btn btn-floating yellow darken-1"><i class="material-icons"></i></a></li>
+                          <li><a id='4caf50' class="change-color-btn btn-floating green"><i class="material-icons"></i></a></li>
+                          <li><a id='1e88e5' class="change-color-btn btn-floating blue"><i class="material-icons"></i></a></li>
+                          <li><a id='001001' class="change-color-btn btn-floating black"><i class="material-icons"></i></a></li>
+                          <li><a id='ffffff' class="change-color-btn btn-floating white"><i class="material-icons"></i></a></li>
+                        </ul>
+                      </div>
+                      
+
+                      <div class="fixed-action-btn vertical tool">
+                        <a class="btn-floating btn-large orange">
+                          <i class="large material-icons">view_day</i>
+                        </a>
+                        <ul>
+                          <li><a id='size_25'class="change-size-btn btn-floating large"></a></li>
+                          <li><a id='size_15' class="change-size-btn btn-floating medium"></a></li>
+                          <li><a id='size_9' class="change-size-btn btn-floating small"></a></li>
+                          <li><a id='size_2' class="change-size-btn btn-floating tiny"></a></li>
+                        </ul>
+                      </div>
+
+                      <div class="fixed-action-btn vertical tool">
+                        <a id='clear-btn' class="btn-floating btn-large red">
+                          <i class="large material-icons">clear</i>
+                        </a>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+          <div id='chat-content' class='column small hide-on-landscape-tablet full-on-portrait-tablet'>  
+                <div id='messages-row' class="content-row tall">
+                  <ul id='messages' class="collection z-depth-1">
+                  </ul>
+                </div>
+              
+                <!--****************-->
+                <!--* Messages end *-->
+                <!--****************-->
+                
+                <!--*****************-->
+                <!--***** Input *****-->
+                <!--*****************-->
+
+                <div id='input-row' class='content-row low blue-grey lighten-5 z-depth-1'>
+                    <form id='mes-form' class="column large">
+                          <div class="input-field">
+                            <i class="material-icons prefix">mode_edit</i>
+                            <textarea id="message_area" class="materialize-textarea"></textarea>
+                            <label for="message_area">Message</label> 
+                          </div>
+                    </form>
+
+                    <div id='send-btn-column' class="column small">
+                      <a id='send-btn' class="tool btn-floating btn-large blue">
+                        <i class="material-icons">send</i>
+                      </a>
+                    </div>
+
+                </div>
+
+                <!--*****************-->
+                <!--*** Input end ***-->
+                <!--*****************-->
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+<!-- *************************** -->
+<!-- ****** Content blok end *** -->
+<!-- *************************** -->
