@@ -40,7 +40,7 @@ app.use('/room/', express.static(__dirname + '/public/', { maxAge: cacheTime }))
 app.use('/auth/register/', express.static(__dirname + '/public/', { maxAge: cacheTime }));
 app.use('/auth/login/', express.static(__dirname + '/public/', { maxAge: cacheTime }));
 app.use('/edit/', express.static(__dirname + '/public/', { maxAge: cacheTime }));
-app.use('/peoples/', express.static(__dirname + '/public/', { maxAge: cacheTime }));
+app.use('/people/', express.static(__dirname + '/public/', { maxAge: cacheTime }));
 app.use(session({
       secret: 'lakjsdbjuyolqlll',
       cookie: {
@@ -93,16 +93,16 @@ app.post('/edit/', loadUser, profile_editor.edit);
 app.post('/edit/avatar', loadUser, profile_editor.change_avatar);
 
 // Friends
-app.get('/peoples/', loadUser, friends.page);
+app.get('/people/', loadUser, friends.page);
 
-app.get('/peoples/all-peoples/', loadUser, friends.peoples);
-app.get('/peoples/friends/', loadUser, friends.friends);
-app.get('/peoples/requests/', loadUser, friends.requests);
+app.get('/people/all/', loadUser, friends.peoples);
+app.get('/people/friends/', loadUser, friends.friends);
+app.get('/people/requests/', loadUser, friends.requests);
 
-app.post('/peoples/request/', loadUser, friends.friend_request.request);
-app.post('/peoples/request/accept/', loadUser, friends.friend_request.accept);
-app.post('/peoples/request/delete/', loadUser, friends.friend_request.denied);
-app.delete('/peoples/request/', loadUser, friends.friend_request.denied);
+app.post('/people/request/', loadUser, friends.friend_request.request);
+app.post('/people/request/accept/', loadUser, friends.friend_request.accept);
+app.post('/people/request/delete/', loadUser, friends.friend_request.denied);
+app.delete('/people/request/', loadUser, friends.friend_request.denied);
 
 // Messages
 app.get('/room/', loadUser, function(req, res, next){

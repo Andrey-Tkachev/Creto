@@ -22,5 +22,5 @@ html {overflow: auto;}
 
 	#content .card-container { padding-top: 20px; margin-left: 0.5rem;  margin-right: 0.5rem; display: inline-block; height: 300px; max-width: 300px; z-index: 1}
 	#content .card {}
-	#content .peoples {text-align: center;}
+	#content .people {text-align: center;}
 	#content .info {width: 100%; padding-top: 2%;}

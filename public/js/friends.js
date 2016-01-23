@@ -70,7 +70,7 @@ function friend_request() {
   console.log('friend request to', $(this).attr('name'));
   $.ajax({
       type: "POST",
-      url: "/peoples/request",
+      url: "/people/request",
       data: { id : $(this).attr('name')},
       dataType: "json"
     }).error(function (data) {
@@ -84,7 +84,7 @@ function accept_friendship(){
   console.log('accept ', $(this).attr('name'));
   $.ajax({
       type: "POST",
-      url: "/peoples/request/accept",
+      url: "/people/request/accept",
       data: { id : $(this).attr('name') },
       dataType: "json"
     }).error(function (data) {
@@ -99,7 +99,7 @@ function accept_friendship(){
 //All peoples getting
 $.ajax({
       type: "GET",
-      url: "/peoples/all-peoples",
+      url: "/people/all",
       data: {},
       dataType: "json"
     }).error(function (data) {
@@ -109,7 +109,7 @@ $.ajax({
       peoples = JSON.parse(data.peoples);
       for (var i=0; i<peoples.length; i++)
       {
-        create_person(peoples[i], '#all-peoples');
+        create_person(peoples[i], '#people');
       }
       $('.add-to-friend').click(friend_request);
       console.log(data);
@@ -119,7 +119,7 @@ $.ajax({
 function check_friends() {
   $.ajax({
       type: "GET",
-      url: "/peoples/friends",
+      url: "/people/friends",
       data: { selector : {}},
       dataType: "json"
     }).error(function (data) {
@@ -142,7 +142,7 @@ function check_friends() {
 // Requests getting
 $.ajax({
       type: "GET",
-      url: "/peoples/requests",
+      url: "/people/requests",
       data: { selector : {}},
       dataType: "json"
     }).error(function (data) {
