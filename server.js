@@ -19,7 +19,7 @@ var login             = require('./libs/login');
 var registration      = require('./libs/registration');
 var profile           = require('./libs/profile');
 var profile_editor    = require('./libs/profile_editor');
-var friends           = require('./libs/friends');
+var people           = require('./libs/people');
 
 var session           = require('express-session');
 var MongoStore        = require('connect-mongodb-session')(session);
@@ -31,7 +31,8 @@ var app               = express();
 var swig              = require('swig');
 var xssFilters        = require('xss-filters');
 var zlib              = require('zlib');
-var cacheTime          = 86400000;  
+var cacheTime         = config.get('cache_time');
+var cookieTime        = config.get('cookie_time')  
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Static files sharing
@@ -41,27 +42,16 @@ app.use('/auth/register/', express.static(__dirname + '/public/', { maxAge: cach
 app.use('/auth/login/', express.static(__dirname + '/public/', { maxAge: cacheTime }));
 app.use('/edit/', express.static(__dirname + '/public/', { maxAge: cacheTime }));
 app.use('/people/', express.static(__dirname + '/public/', { maxAge: cacheTime }));
+
 app.use(session({
       secret: 'lakjsdbjuyolqlll',
       cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week 
+        maxAge: cookieTime // 1 week 
       },
       store: sessionStore
 }));
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
-
-// Error 404 processing
-app.use(function(err, req, res, next){
-    if(err.status !== 404) {
-   	 return next();
-  	}
-  	res.status(404);
-    log.debug('Not found URL: %s',req.url);
-    res.send({ error: 'Not found' });
-    return;
-});
-
 
 // SingIn and SingUp 
 function loadUser(req, res, next) {
@@ -93,25 +83,26 @@ app.post('/edit/', loadUser, profile_editor.edit);
 app.post('/edit/avatar', loadUser, profile_editor.change_avatar);
 
 // Friends
-app.get('/people/', loadUser, friends.page);
+app.get('/people/', loadUser, people.page);
 
-app.get('/people/all/', loadUser, friends.peoples);
-app.get('/people/friends/', loadUser, friends.friends);
-app.get('/people/requests/', loadUser, friends.requests);
+app.get('/people/all/', loadUser, people.peoples);
+app.get('/people/friends/', loadUser, people.friends);
+app.get('/people/requests/', loadUser, people.requests);
 
-app.post('/people/request/', loadUser, friends.friend_request.request);
-app.post('/people/request/accept/', loadUser, friends.friend_request.accept);
-app.post('/people/request/delete/', loadUser, friends.friend_request.denied);
-app.delete('/people/request/', loadUser, friends.friend_request.denied);
+app.post('/people/request/', loadUser, people.friend_request.request);
+app.delete('/people/request/', loadUser, people.delete_from_friends);
+app.post('/people/request/accept/', loadUser, people.friend_request.accept);
+app.post('/people/request/reject/', loadUser, people.friend_request.reject);
 
 // Messages
 app.get('/room/', loadUser, function(req, res, next){
     res.render(__dirname + '/public/html/chat_room.html', 
               { 'user_menu' : true,
                 'person' : {
-                    'name'      : req.currentUser.full_name,
-                    'images'    : req.currentUser.images.url,
-                    'thumb'     : req.currentUser.thumb.url
+                    'name'           : req.currentUser.full_name,
+                    'images'         : req.currentUser.images.url,
+                    'thumb'          : req.currentUser.thumb.url,
+                    'requests_count' : req.currentUser.friends_requests.length
                   }});
 });
 

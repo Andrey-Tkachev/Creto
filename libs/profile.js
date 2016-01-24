@@ -22,9 +22,10 @@ function page(req, res, next) {
                                     {'self': (target == user_id),
                                      'notself': (target != user_id) && (user),
                                      'person': {
-                                          'name'        : user.full_name,
-                                          'images'      : user.images.url,
-                                          'thumb'       : user.thumb.url
+                                          'name'           : user.full_name,
+                                          'images'         : user.images.url,
+                                          'thumb'          : user.thumb.url,
+                                          'requests_count' : user.friends_requests.length
                                      },
                                       'tperson' :  {
                                           'name'        : target_user.full_name,

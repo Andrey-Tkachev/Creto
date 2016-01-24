@@ -32,7 +32,7 @@ html { overflow: hidden; }
 
 nav {height: 64px !important; min-width: 300px;}
 nav.info {height: 56px !important; min-width: 300px; line-height: 56px !important;}
-
+nav .badge { color : white;}
 .nav-bar { z-index: 5; background-color: #336EAC !important;}
 	  .nav-bar .wrapper { width: 100% !important; height: 64px !important; }
 	  .nav-bar .logo-text {padding-left: 1rem !important;}
