@@ -29,6 +29,8 @@ function page(req, res, next) {
                                      },
                                       'tperson' :  {
                                           'name'        : target_user.full_name,
+                                          'first_name'  : target_user.first_name,
+                                          'last_name'   : target_user.last_name,
                                           'images'      : target_user.thumb.url,
                                           'about'       : target_user.about,
                                           'friends'     : target_user.friends,
