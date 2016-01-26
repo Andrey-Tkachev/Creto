@@ -15,6 +15,7 @@
 
 {% block user_page_nav_bar %}
   {% parent %}
+  {% set user_menu = not self %}
   {% include "nav_bars/user_nav_bar.html" %}
 {% endblock %}
 
@@ -25,6 +26,81 @@
 {% endblock %}
 
 {% block content %}
+	<div id='content'>
+		<div class="wrapper full-on-portrait-tablet">
+			<div id='user-info' class='content-row'>
+				<div class='column small full-on-portrait-tablet'>
+					<div id='profile-side-nav' class='container z-depth-1 interactive full-on-portrait-tablet rounded'>
+						<div id='profile-img-container' class="content-container rounded">
+			      			<form id         =  "uploadForm"
+			     				  enctype    =  "multipart/form-data"
+							      action     =  "/edit/avatar"
+							      method     =  "post">
+							    <div class="file-field">
+							   	  <img class=" rounded"  src="{{tperson.images}}">
+							     {% if self %}<input id='file-input' type="file" name="userPhoto">{% endif %}
+							    </div>
+						    </form>
+						</div>
+
+						<div id='user-info-container'class='content-container '>
+							<h4>{{  tperson.first_name }}</h4>
+							<h4>{{  tperson.last_name  }}</h4>
+							<h5 class='flow-text'>{{  tperson.homecity   }}</h5>
+						</div>
+
+						<div id='tool-container' class="content-container">
+						{% if self %} 
+							<div class='tool center'>
+								<a id="profile-edit-btn" class='btn' href="edit">Edit the page</a>
+							</div>
+						{% else %}
+							<div class='tool center'> 
+								<a class='btn' name="{{tperson.id}}" id="add-to-friends-btn">Add to friends</a>
+							</div>
+						{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class='column large full-on-portrait-tablet'>
+					<div id='profile-info' class="full-on-portrait-tablet z-depth-1 content-container rounded">
+						<div class="item ">
+							<div class="label">Date:</div>
+					  		<div class="labeled"><a href="">{{tperson.birthdate}}</a></div>
+				  		</div>
+
+						<div class="item ">
+					  		<div class="label">Marital status:</div>
+					  		<div class="labeled"><a href="">{{tperson.status}}</a></div>
+						</div>
+
+
+						<div class="item ">
+					  		<div class="label">Languages:</div>
+					  		<div class="labeled"><a href="">Русский</a>, <a href="">English</a></div>
+						</div>
+
+						<div class="item ">
+					  		<div class="label">About:</div>
+					  		<div class="labeled"><a href="">{{tperson.about}}</a></div>
+						</div>
+					</div>
+
+					<div id='post-maker-container' class='content-container rounded'>
+						<div class="input-box rounded">
+						        <div class="input-field z-depth-1 rounded">
+						          <textarea id="textarea1" class="materialize-textarea"></textarea>
+						          <label for="textarea1">what's happening?</label>
+						        </div>
+			    		</div>
+  					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block content1 %}
 	<div class="profile row">
       <div class="left-column col s12 m4 l4"> 
       		<div id='profile-img-container'>

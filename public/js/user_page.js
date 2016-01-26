@@ -14,11 +14,12 @@ window.onload = function() {
 	  	});
 	  window.location.href = '/auth/login';
 	});
-  $('.add-to-friends').click( function() {
+
+  $('#add-to-friends-btn').click( function() {
 	  console.log('friend request to', $(this).attr('name'));
 	  $.ajax({
 	      type: "POST",
-	      url: "/peoples/request",
+	      url: "/people/request",
 	      data: { id : $(this).attr('name')},
 	      dataType: "json"
 	    }).error(function (data) {
