@@ -1,41 +1,45 @@
 function create_person(person_data, type){
-  var container = document.createElement('div');  
+  var container = document.createElement('div'); 
+  if (type != 'people') 
       container.className = 'card-container';
+  else
+      container.className = 'card-container fl';
   
-  var card = document.createElement('div');
-      card.className = 'card';
+  var card = create_element('div', 'card');
   // Image block
-  var card_image = document.createElement('div');
-      card_image.className = 'card-image waves-effect waves-block waves-light';
 
-  var img = document.createElement('img');
-      img.className = 'activator';
+  var card_image = create_element('div', 'card-image waves-effect waves-block waves-light');
+  var img = create_element('img', 'activator');
       img.src = person_data.thumb;
 
   card_image.appendChild(img);
   
   // Content block
-  var card_content = document.createElement('div');
-      card_content.className = 'card-content';
+  var card_content = create_element('div', 'card-content');
 
-  var card_title = document.createElement('span');
-      card_title.className = 'card-title';
-      card_title.innerHTML = '<a href="/' + person_data.id + '">' + person_data.full_name + '<i class="material-icons right">more_vert</i></a>';
+  var card_title = create_element('span', 'card-title');
+
+  var person_name = create_element('a', '')
+      person_name.href = '/' + person_data.id;
+      person_name.innerHTML =  person_data.full_name + '<i class="material-icons right">more_vert</i>';
+  
+  card_title.appendChild(person_name);
 
   var p_activator = document.createElement('p');
-      p_activator.innerHTML = '<a class="activator">About</a>';
+      p_activator.appendChild(create_element('a', 'activator'));
 
   var p_add_to_frds = document.createElement('p');
+  p_add_to_frds.className = 'butns'
   if (type != '#friends'){
     if (type == '#friends-requests') {
-      inner = 'class="accept-friendship">Accept</a> ' +  '<a name="' + person_data.id + '" class="reject-friendship"> Reject </a>';
+      inner = 'class="accept-friendship tool">Accept</a>' +  '<a name="' + person_data.id + '" class="tool-without-filling reject-friendship"> Reject </a>';
     }
     else {
-      inner =  'class="add-to-friend">Add to friends</a>';
+      inner =  'class="add-to-friend tool">Add to friends</a>';
     } 
   }
   else {
-    inner = 'class="delete-from-friends">Delete from friends</a>';
+    inner = 'class="delete-from-friends tool">Delete from friends</a>';
   }
   
   p_add_to_frds.innerHTML = '<a name="' + person_data.id + '"' + inner;
@@ -67,6 +71,14 @@ function create_person(person_data, type){
   container.appendChild(card);
   $(type).append(container);
 
+}
+
+function create_element(type, el_class, name, id){
+  var element = document.createElement(type);
+      element.className = el_class;
+      if (name)
+        element.name = name;
+      return element
 }
 
 function delete_from_friends() {

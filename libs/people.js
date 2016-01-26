@@ -27,6 +27,7 @@ function page(req, res){
                                               'last_name'      : user.last_name,
                                               'images'         : user.thumb.url,
                                               'name'           : user.full_name,
+                                              'thumb'          : user.thumb.url,
                                               'requests_count' : user.friends_requests.length
                                             }
                                         });

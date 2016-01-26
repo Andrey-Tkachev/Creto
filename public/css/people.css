@@ -13,14 +13,30 @@ html {overflow: auto;}
 .card a { color: #2B587A !important; text-decoration: none; }
 .card a:hover { color: #336EAC !important; text-decoration: none; }
 
+a.tool-without-filling { display: inline-block; border: 2px solid #548bc9; border-radius: 3px; 
+						color: #344c66; width: 100%;}
+a.tool-without-filling:hover { border: 2px solid #98b9de; color: #90b9de !important;}
+
+a.tool { margin: 0; margin-bottom: 5px; border: 2px; border-radius: 3px; 
+		display: inline-block; background:#5780ab ; 
+		color: white !important; width: 100%; padding-top: 3px;}
+
+a.tool:hover {background: #bbccdd; color: #344c66 !important;}
+
 .info input[type=search]:focus+label i {color: black !important;}
 .info { display: inline-block;}
-
+.card-image img { width: 300px !important;}
+.butns { padding-top: 50px;}
 #content { position: absolute; width: 100%; height: calc(100% - 62px); }
-	#content .wrapper { max-width: 80%;  height: calc(100%); margin-left: auto; margin-right: auto; }
+	#content .wrapper { max-width: 80%;  height: calc(100%);   margin-left: auto; margin-right: auto; }
 
 
-	#content .card-container { padding-top: 20px; margin-left: 0.5rem;  margin-right: 0.5rem; display: inline-block; height: 300px; max-width: 300px; z-index: 1}
+	#content .card-container { padding-top: 20px; margin-left: 0.5rem;  margin-right: 0.5rem; display: inline-block; 
+								max-height: 500px; max-width: 300px; z-index: 1;}
 	#content .card {}
 	#content .people {text-align: center;}
 	#content .info {width: 100%; padding-top: 2%;}
+
+.card { min-height: 450px;}
+
+.fl {float: left;}
