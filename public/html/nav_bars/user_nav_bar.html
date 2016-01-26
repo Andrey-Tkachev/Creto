@@ -11,7 +11,7 @@
 
 <nav id='user-page-nav' class='nav-bar logo'>
       <div class="wrapper z-depth-2">
-        <a href="/" class="brand-logo left hide-on-med-and-down"><text class='logo-text'>Сreto</text></a>
+        <a href="/" class="brand-logo left hide-on-med-and-down"><text class='logo-text'>CRETO</text></a>
         <ul id="nav-tools" class="right">
           <li><a onclick="javascript:window.location.port=8000;"><text class='hide-on-portrait-tablet'>Games</text><i class="material-icons left">games</i></a></li>
           <li><a href="/people/"><text class='hide-on-portrait-tablet'>People</text> {% if person.requests_count != 0 %} <span class="badge requests-indicator">{{person.requests_count}} new</span> {% endif %} <i class="material-icons left">supervisor_account</i></a></li>
@@ -27,7 +27,7 @@
               <a class="profile-name dropdown-button"  href="" data-activates="dropdown">{{ person.name }}</a>
             </li>
           {% else %} 
-            <li><a id='logout'>Logout</a></li> 
+            <li><a id='logout'> <i class="material-icons left">power_settings_new</i></a></li> 
           {% endif %}
           
         </ul>

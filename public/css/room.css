@@ -1,4 +1,4 @@
- #content { position: absolute; width: 100%; height: calc(100% - 62px); z-index: 0;}
+ #content { position: absolute; width: 100%; height: calc(100% - 62px); z-index: -1;}
 	#content .wrapper { max-width: 1930px;  height: calc(100%); margin-left: auto; margin-right: auto; }
 	.portrait .full-on-portrait-tablet .wrapper  { height: 91%; }
 	.portrait .full-on-portrait-tablet .content-row  { display:block; width: 100%; padding-right: 0; padding-left: 0; float: left;}

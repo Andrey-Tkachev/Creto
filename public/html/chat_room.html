@@ -21,6 +21,7 @@
 
 {% block user_page_nav_bar %}
   {% parent %}
+  {% set user_menu = true %}
   {% include "nav_bars/user_nav_bar.html" %}
 {% endblock %}
 
@@ -38,7 +39,6 @@
 
       <div id='content'>
         <div class='wrapper'>
-
           <div class='content-row full'>
 
             <div id='draw-content' class='column large  full-on-landscape-tablet hide-on-portrait-tablet'> 
