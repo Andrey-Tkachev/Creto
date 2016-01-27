@@ -148,7 +148,7 @@ function accept_friendship(){
       Materialize.toast('Accepting error.', 5000);
     
   }).success(function (data) {
-      msg = "Now your a friends";
+      msg = "now you are friends";
       if (data.status != 200)
         msg = 'Friend requests accepting error';
       Materialize.toast(msg, 5000);
