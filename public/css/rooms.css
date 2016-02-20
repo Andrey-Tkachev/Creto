@@ -1,0 +1,38 @@
+.info input[type=search]:focus+label i {color: black !important;}
+.info { display: inline-block;}
+.info i.active   {color: black !important;}
+.info i {color: #2B587A !important;}
+
+#content { position: absolute; width: 100%; height: calc(100% - 62px); }
+	#content .wrapper { max-width: 80%;  height: calc(100%);   margin-left: auto; margin-right: auto; }
+
+
+	#content .card-container { padding-top: 20px; margin-left: 0.5rem;  margin-right: 0.5rem; display: inline-block; 
+								max-height: 500px; max-width: 300px; z-index: 1;}
+	#content .card {}
+	#content .people {text-align: center;}
+	#content .info {width: 100%; padding-top: 2%;}
+
+
+
+.item:hover {background-color: #eaeff4;}
+.item {height: 100px; background-color: white; margin-top: 20px; transition: .2s ease-out;}
+.item img { width: 100px; height: 100px; display: inline-block; float: left; }
+
+.item h5, h6 {
+    display: block;
+    line-height: 1.3rem;
+    width: 100%;
+}
+h5 {
+    font-size: 1.3rem;
+    line-height: 110%;
+    margin: 0.1rem 0 0.656rem 0;
+}
+.item .dialog-info { width: calc(100% - 100px - 0.5rem) !important;
+					 line-height: 2rem !important; 
+					 padding-top: 1rem; 
+					 margin-left: 0.5rem; 
+					 display: inline-block; float: left;}
+
+.item .last-message-text { padding-left: 5rem; padding-top: 1rem;}

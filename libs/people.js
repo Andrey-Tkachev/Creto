@@ -14,8 +14,6 @@ function safe_person(person){
 }
 
 function page(req, res){
-  req.currentUser.friends.remove(req.currentUser);
-  req.currentUser.save();
     UserModel.findById(req.session.user_id, function(err, user) {
       if (user) {
         friends = [];
@@ -80,10 +78,13 @@ function requests(req, res) {
 
 friend_request = { 
   request : function (req, res) {
-    log.info('Friend request');
+    log.info('friend request');
     UserModel.findById(req.body.id)
              .exec(function(err, target_user) {
-                if ((target_user) && (target_user.friends_requests.indexOf(req.currentUser._id) == -1)) {
+                if ((target_user) && 
+                    (target_user.friends_requests.indexOf(req.currentUser._id) == -1) &&
+                    (target_user.friends.indexOf(req.currentUser._id) == -1)) {
+
                   UserModel.update({ _id: req.body.id }, 
                                    { $pushAll: { friends_requests : [req.currentUser] }}, 
                                    { upsert:true }, 
@@ -107,7 +108,7 @@ friend_request = {
   },
 
   accept  : function (req, res) {
-    log.info('Friend accept');
+    log.info('friend accept');
     if (req.currentUser.friends.indexOf(req.body.id) == -1){
 
       UserModel.findById(req.body.id, function(err, target_user) {   
@@ -140,7 +141,7 @@ friend_request = {
 
   },
   reject  : function (req, res) {
-    log.info('Friend reject');
+    log.info('friend reject');
     UserModel.findById(req.body.id).exec( function (err, target_user) {
         if (err) {
           res.send(JSON.stringify({status : 500}));
@@ -155,7 +156,7 @@ friend_request = {
 }
 
 function delete_from_friends(req, res) {
-  log.info('Delete from friend');
+  log.info('delete from friend');
   UserModel.findById(req.body.id).exec( function (err, target_user) {
       if (err) {
         res.send(JSON.stringify({status : 500}));
@@ -174,6 +175,6 @@ module.exports.peoples            = peoples;
 module.exports.friends            = friends;
 module.exports.requests           = requests;
 
-module.exports.page               = page;
-module.exports.friend_request     = friend_request;
-module.exports.delete_from_friends = delete_from_friends;
+module.exports.page                 = page;
+module.exports.friend_request       = friend_request;
+module.exports.delete_from_friends  = delete_from_friends;

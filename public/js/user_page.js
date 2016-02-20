@@ -29,4 +29,21 @@ window.onload = function() {
 	      Materialize.toast('Request sent. Wait until the user confirm your friendship confirmation.', 5000);
 	  });
 	});
+
+  $('#write-msg-btn').click( function() {
+	  console.log('room creator request to ', $(this).attr('name'));
+	  $.ajax({
+	      type: "POST",
+	      url: "/rooms/",
+	      data: { members : [$(this).attr('name')], is_dialog : true},
+	      dataType: "json"
+	    }).error(function (data) {
+	      Materialize.toast('Request error.', 5000);
+	    
+	  }).success(function (data) {
+	      console.log(data);
+	      window.location.href = '/room/' + data.redirect;
+	  });
+	});
+
 }

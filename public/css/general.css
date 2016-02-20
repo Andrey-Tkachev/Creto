@@ -1,7 +1,7 @@
 body { color: #2B587A; text-decoration: none; }
 a    { cursor: pointer; }
 html { overflow: hidden; }
-
+html { overflow: auto; background-color: #f2f5f6;}
 
 .landscape .hide-on-landscape-tablet {
 		display: none !important;

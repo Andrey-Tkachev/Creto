@@ -1,6 +1,17 @@
 
 var socket = io.connect(window.location.protocol + "//" + window.location.host + '/');
-socket.emit('last messages', 'all');
+
+room_id = window.location.href.split('/').pop();
+
+socket.emit('join room', {id : room_id});
+
+socket.on('status',	function(data){
+	if (data == 'ok'){
+		socket.emit('last messages', 'all');
+		socket.emit('last drawing', 'all');
+	}
+
+});
 
 
 

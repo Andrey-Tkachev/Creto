@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+
+
+{% block stylesheet_links%}
+  {% parent %}
+  <link type="text/css" rel="stylesheet" href="css/general.css"  media="screen,projection"/>
+  <link type="text/css" rel="stylesheet" href="css/rooms.css"  media="screen,projection"/>
+{% endblock %}
+
+{% block scripts_links %}
+  {% parent %}
+  <script defer type="text/javascript" src="js/main.js" defer></script>
+  <script defer type="text/javascript" src="js/rooms.js"></script>
+{% endblock %}
+
+{% block user_page_nav_bar %}
+  {% parent %}
+  {% set user_menu = true %}
+  {% include "nav_bars/user_nav_bar.html" %}
+{% endblock %}
+
+{% block info_nav_bar %}
+  {% parent %}
+    <nav id='info-nav' class='nav-bar info'>
+    <div id='info-nav-wrapper' class="wrapper z-depth-1">
+      <form>
+        <div class="input-field">
+          <input id="search" type="search" required>
+          <label for="search"><i class="material-icons">search</i></label>
+          <i class="material-icons">close</i>
+        </div>
+      </form>
+    </div>
+  </nav>
+{% endblock %}
+
+{% block content %}
+  <div id='content'>
+    <div  id='content-wrapper' class="wrapper">
+      
+      <h4> You have no Messages( </h4>
+      <h4> <a id='find-friends-btn'> But you can always write them </a></h4>
+
+    </div>
+  </div>
+{% endblock %}
+
+
+ <div class='item z-depth-1'>
+  <div class='column small'>
+     <img src="users/56a910f51a595f40275ff758/avatar_thumb"> </img>
+
+     <div class='dialog-info'>
+        <h5> Andrey Tkachev </h5>
+        <h6> 2 February 2016</h6>
+     </div>
+  </div>
+
+  <div class='column large'>
+       <h4 class='last-message-text'> Hey!!! It is a fake message! </h4>
+  </div>
+</div>  

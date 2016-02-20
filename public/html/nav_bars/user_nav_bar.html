@@ -15,7 +15,7 @@
         <ul id="nav-tools" class="right">
           <li><a onclick="javascript:window.location.port=8000;"><text class='hide-on-portrait-tablet'>Games</text><i class="material-icons left">games</i></a></li>
           <li><a href="/people/"><text class='hide-on-portrait-tablet'>People</text> {% if person.requests_count != 0 %} <span class="badge requests-indicator">{{person.requests_count}} new</span> {% endif %} <i class="material-icons left">supervisor_account</i></a></li>
-          <li><a href="/room/"><text class='hide-on-portrait-tablet'>Messages</text><i class="material-icons left">message</i></a></li>
+          <li><a href="/rooms/"><text class='hide-on-portrait-tablet'>Messages</text><i class="material-icons left">message</i></a></li>
           {% if user_menu %} 
             <li class=""> 
               <a  class='valign-wrapper' href="/">

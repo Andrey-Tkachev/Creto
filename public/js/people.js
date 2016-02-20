@@ -21,7 +21,7 @@ function create_person(person_data, type){
 
   var person_name = create_element('a', '')
       person_name.href = '/' + person_data.id;
-      person_name.innerHTML =  person_data.full_name + '<i class="material-icons right">more_vert</i>';
+      person_name.innerHTML =  person_data.full_name;
   
   card_title.appendChild(person_name);
 
@@ -32,14 +32,14 @@ function create_person(person_data, type){
   p_add_to_frds.className = 'butns'
   if (type != '#friends'){
     if (type == '#friends-requests') {
-      inner = 'class="accept-friendship tool">Accept</a>' +  '<a name="' + person_data.id + '" class="tool-without-filling reject-friendship"> Reject </a>';
+      inner = 'class="accept-friendship tool flow-text">Accept</a>' +  '<a name="' + person_data.id + '" class="tool-without-filling reject-friendship"> Reject </a>';
     }
     else {
-      inner =  'class="add-to-friend tool">Add to friends</a>';
+      inner =  'class="add-to-friend tool flow-text">Add to friends</a>';
     } 
   }
   else {
-    inner = 'class="delete-from-friends tool">Delete from friends</a>';
+    inner = 'class="delete-from-friends tool-without-filling">Delete from friends</a>' + ' <a name="' +  person_data.id  + '" class="write-message tool">Write message</a>';
   }
   
   p_add_to_frds.innerHTML = '<a name="' + person_data.id + '"' + inner;
@@ -79,6 +79,22 @@ function create_element(type, el_class, name, id){
       if (name)
         element.name = name;
       return element
+}
+
+function write_message() {
+  console.log('room creator request to ', $(this).attr('name'));
+    $.ajax({
+        type: "POST",
+        url: "/rooms/",
+        data: { members : [$(this).attr('name')], is_dialog : true},
+        dataType: "json"
+      }).error(function (data) {
+        Materialize.toast('Request error.', 5000);
+      
+    }).success(function (data) {
+        console.log(data);
+        window.location.href = '/room/' + data.redirect;
+    });
 }
 
 function delete_from_friends() {
@@ -199,6 +215,7 @@ function check_friends() {
           create_person(peoples[i], '#friends');
         }
         $('.delete-from-friends').click(delete_from_friends);
+        $('.write-message').click(write_message);
         console.log(data);
     });
 
@@ -233,6 +250,7 @@ function check_requests ()
       }
       $('.accept-friendship').click(accept_friendship);
       $('.reject-friendship').click(reject_friendship);
+
       console.log(data);
   });
 }

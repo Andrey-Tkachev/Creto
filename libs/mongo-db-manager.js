@@ -23,24 +23,6 @@ var Images = new Schema({
     url: { type: String, default: 'images/user.png' }
 });
 
-var Drawing = new Schema({
-	start_x : { type: Number, required: true },
-	start_y : { type: Number, required: true },
-	end_x : { type: Number, required: true },
-	end_y : { type: Number, required: true },
-	color : { type: String, required: true },
-	line_join : { type: String, required: true },
-	width : { type: Number, required: true }
-});
-
-var DrawingEvent = new Schema({
-	author: { type: String, required: true },
-	drawing: [Drawing],
-    date: { type: Date, default: Date.now }
-	//, _roomId: Schema.Types.ObjectId,
-});
-
-
 
 var User = new Schema({
     first_name       : { type: String },
@@ -58,56 +40,85 @@ var User = new Schema({
     status           : { type: String, default: "None"},
     about            : { type: String, default: "Not specified"},
     salt             : String
+
   });
 
 
-User.virtual('safe_email').get(function() {
-  return xssFilters(this.email);
+  User.virtual('safe_email').get(function() {
+    return xssFilters(this.email);
+  });
+
+  User.virtual('full_name').get(function() {
+    return this.first_name + ' ' + this.last_name;
+  });
+
+  User.virtual('id').get(function() {
+    return this._id.toHexString();
+  });
+
+  User.virtual('password')
+      .set(function(password) {
+        this._password = password;
+        this.salt = this.makeSalt();
+        this.hashed_password = this.encryptPassword(password);
+      })
+      .get(function() { return this._password; });
+
+  User.methods.authenticate = function(plainText) {
+      return this.encryptPassword(plainText) === this.hashed_password;
+  };
+
+  User.method('makeSalt', function() {
+      return Math.round((new Date().valueOf() * Math.random())) + '';
+  });
+
+  User.method('encryptPassword', function(password) {
+      return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
+  });
+
+  User.pre('save', function(next) {
+      if (false) {
+        next(new Error('Invalid password'));
+      } else {
+        next();
+      }
+  });
+
+
+var Room = new Schema({ 
+  users         : [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
+  creator       : {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+  dialog        : Boolean
+  last_message  : {type: mongoose.Schema.Types.ObjectId, ref: 'Message'}
 });
 
-User.virtual('full_name').get(function() {
-  return this.first_name + ' ' + this.last_name;
+  Room.virtual('id').get(function() {
+    return this._id.toHexString();
+  });
+
+var Drawing = new Schema({
+  start_x   : { type: Number, required: true },
+  start_y   : { type: Number, required: true },
+  end_x     : { type: Number, required: true },
+  end_y     : { type: Number, required: true },
+  color     : { type: String, required: true },
+  line_join : { type: String, required: true },
+  width     : { type: Number, required: true }
 });
 
-User.virtual('id').get(function() {
-  return this._id.toHexString();
+var DrawingEvent = new Schema({
+  author   : { type: String, required: true },
+  drawing  : [Drawing],
+  date     : { type: Date, default: Date.now },
+  room_ref : Schema.Types.ObjectId
 });
-
-User.virtual('password')
-    .set(function(password) {
-      this._password = password;
-      this.salt = this.makeSalt();
-      this.hashed_password = this.encryptPassword(password);
-    })
-    .get(function() { return this._password; });
-
-User.methods.authenticate = function(plainText) {
-    return this.encryptPassword(plainText) === this.hashed_password;
-};
-
-User.method('makeSalt', function() {
-    return Math.round((new Date().valueOf() * Math.random())) + '';
-});
-
-User.method('encryptPassword', function(password) {
-    return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
-});
-
-User.pre('save', function(next) {
-    if (false) {
-      next(new Error('Invalid password'));
-    } else {
-      next();
-    }
-});
-
 
 
 var Message = new Schema({
-    user_ref: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-    message_text: { type: String, required: true },
-    date: { type: Date, default: Date.now },
-    //, _roomId: Schema.Types.ObjectId,
+    user_ref      : { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    message_text  : { type: String, required: true },
+    date          : { type: Date, default: Date.now },
+    room_ref      : Schema.Types.ObjectId
 });
   
 
@@ -126,13 +137,16 @@ function mongoStoreConnectionArgs() {
 };
 
 
-var UserModel = mongoose.model('User', User);
-var MessageModel = mongoose.model('Message', Message);
-var DrawingEventModel = mongoose.model('DrawingEvent', DrawingEvent);
-var UserModel = mongoose.model('User', User);
 
-module.exports.MessageModel = MessageModel;
+var RoomModel          = mongoose.model('Room', Room);
+var UserModel          = mongoose.model('User', User);
+var MessageModel       = mongoose.model('Message', Message);
+var DrawingEventModel  = mongoose.model('DrawingEvent', DrawingEvent);
+var UserModel          = mongoose.model('User', User);
+
+module.exports.RoomModel         = RoomModel;
+module.exports.MessageModel      = MessageModel;
 module.exports.DrawingEventModel = DrawingEventModel;
-module.exports.UserModel = UserModel;
-module.exports.mongoose = db;
-module.exports.deepPopulate = deepPopulate;
+module.exports.UserModel         = UserModel;
+module.exports.mongoose          = db;
+module.exports.deepPopulate      = deepPopulate;

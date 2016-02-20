@@ -3,6 +3,6 @@
     "cache_time" : 86400000,
     "cookie_time" : 86400000,
     "mongoose": {
-        "uri": "mongodb://localhost/art-chat"
+        "uri": "mongodb://localhost/creto"
     }
 }

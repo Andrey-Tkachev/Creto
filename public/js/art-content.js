@@ -42,7 +42,11 @@ curr_width = 2;
 
 last_XY = {x:0, y:0};
 lines_for_emit = [];
-socket.emit('last drawing', 'all');
+
+
+//socket.emit('last drawing', 'all');
+
+
 socket.on('clear', function(json){
 	console.log('clear event');
 	context.clearRect(0, 0, canvas.width, canvas.height);

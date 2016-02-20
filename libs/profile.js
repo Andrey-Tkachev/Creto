@@ -20,7 +20,7 @@ function page(req, res, next) {
           if (target_user) {
             res.render('../public/html/user_page.html', 
                                     {'self': (target == user_id),
-                                     'notself': (target != user_id) && (user),
+                                      'is_friends': (user.friends.indexOf(target_user._id) != -1),
                                      'person': {
                                           'name'           : user.full_name,
                                           'images'         : user.images.url,
