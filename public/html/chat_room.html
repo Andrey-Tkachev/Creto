@@ -4,15 +4,22 @@
   {% parent %}
   <link type="text/css" rel="stylesheet" href="css/general.css"  media="screen,projection"/>
   <link type="text/css" rel="stylesheet" href="css/room.css"  media="screen,projection"/>
+ 
+  <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css'>
 {% endblock %}
 
 {% block scripts_links %}
   {% parent %}
+  
+  
+
+  <script type="text/javascript" src="js/main.js" defer></script>
   <script type="text/javascript" src='/js/jsxcompressor.min.js' defer></script>
   <script type="text/javascript" src="/js/socket.io.js" defer></script>
-   <script type="text/javascript" src="js/main.js" defer></script>
   <script type="text/javascript" src="js/chat-content.js" defer></script>
   <script type="text/javascript" src="js/art-content.js" defer></script>
+
+  
 {% endblock %}
 
 <!-- *************************** -->
@@ -36,6 +43,10 @@
 <!-- *************************** -->
 
 {% block content %}
+  {% set time = "{{time}}" %}
+  {% set text = "{{text}}" %}
+  {% set status = "{{status}}"%}
+  {% set author = "{{author}}"%}
 
       <div id='content'>
         <div class='wrapper'>
@@ -47,7 +58,7 @@
                   <div class="progress">  
                         <div class="indeterminate blue"></div>
                       </div>
-                  <canvas id="art_canvas" width='980' height='620' class='z-depth-2' style= "background-color:#ffffff"></canvas> 
+                  <canvas id="art_canvas" width='1280' height='720' class='z-depth-2' style= "background-color:#ffffff"></canvas> 
                   <div id='tools-container' class='content-containe'>
                   
                     <div class='wrapper'>
@@ -60,7 +71,7 @@
                           <li><a id='ffeb3b' class="change-color-btn btn-floating yellow darken-1"><i class="material-icons"></i></a></li>
                           <li><a id='4caf50' class="change-color-btn btn-floating green"><i class="material-icons"></i></a></li>
                           <li><a id='1e88e5' class="change-color-btn btn-floating blue"><i class="material-icons"></i></a></li>
-                          <li><a id='001001' class="change-color-btn btn-floating black"><i class="material-icons"></i></a></li>
+                          <li><a id='000000' class="change-color-btn btn-floating black"><i class="material-icons"></i></a></li>
                           <li><a id='ffffff' class="change-color-btn btn-floating white"><i class="material-icons"></i></a></li>
                         </ul>
                       </div>
@@ -88,46 +99,68 @@
                   </div>
                 </div>
               </div>
-
+          
           <div id='chat-content' class='column small hide-on-landscape-tablet full-on-portrait-tablet'>  
-                <div id='messages-row' class="content-row tall">
-                  <ul id='messages' class="collection z-depth-1">
-                  </ul>
-                </div>
-              
-                <!--****************-->
-                <!--* Messages end *-->
-                <!--****************-->
+            <div class="chat">
+              <div class="chat-header clearfix z-depth-1">
+                <img id='room-img' src="" alt="avatar" />
                 
-                <!--*****************-->
-                <!--***** Input *****-->
-                <!--*****************-->
-
-                <div id='input-row' class='content-row low blue-grey lighten-5 z-depth-1'>
-                    <form id='mes-form' class="column large">
-                          <div class="input-field">
-                            <i class="material-icons prefix">mode_edit</i>
-                            <textarea id="message_area" class="materialize-textarea"></textarea>
-                            <label for="message_area">Message</label> 
-                          </div>
-                    </form>
-
-                    <div id='send-btn-column' class="column small">
-                      <a id='send-btn' class="tool btn-floating btn-large blue">
-                        <i class="material-icons">send</i>
-                      </a>
-                    </div>
-
+                <div class="chat-about">
+                  <div class="chat-with">Chat with </div>
+                  <div class="chat-num-messages">Offline</div>
                 </div>
+                <i class="fa fa-star"></i>
+              </div> <!-- end chat-header -->
+              
+              <div class="chat-history">
+                <ul>
+          
+                </ul>
+              </div> <!-- end chat-history -->
+      
+              <div class="chat-message clearfix z-depth-1">
+                <textarea name="message-to-send" id="message-to-send" placeholder ="Type your message" class='' rows="3"></textarea>
+                        
+                <i class="fa fa-file-o"></i> &nbsp;&nbsp;&nbsp;
+                <i class="fa fa-file-image-o"></i>
+                
+                <button>Send</button>
 
-                <!--*****************-->
-                <!--*** Input end ***-->
-                <!--*****************-->
-          </div>
+              </div> <!-- end chat-message -->
+            
+          </div> <!-- end chat -->
+
         </div>
       </div>
+      </div>
     </div>
+
+    <script id="message-template" type="text/x-handlebars-template" >
+      <li class="clearfix">
+        <div class="message-data align-right">
+          <span class="message-data-time" >{{time}}, Today</span> &nbsp; &nbsp;
+          <span class="message-data-name" >{{author}}</span> <i class="fa fa-circle me"></i>
+        </div>
+        <div class="message other-message float-right z-depth-1">
+         {{ text }}
+        </div>
+      </li>
+    </script>
+
+    <script id="message-response-template" type="text/x-handlebars-template" >
+      <li>
+        <div class="message-data">
+          <span class="message-data-name"><i class="fa fa-circle {{status}}"></i> {{author}}</span>
+          <span class="message-data-time">{{time}}, Today</span>
+        </div>
+        <div class="message my-message z-depth-1">
+          {{ text }}
+        </div>
+      </li>
+    </script>
+
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js' ></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.0/handlebars.min.js' ></script>
+
+    <audio id="chatAudio"><source src="audio/notify1.mp3" type="audio/mpeg"></audio>
 {% endblock %}
-<!-- *************************** -->
-<!-- ****** Content blok end *** -->
-<!-- *************************** -->

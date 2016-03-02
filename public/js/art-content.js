@@ -31,7 +31,7 @@ canvas.addEventListener("touchmove", Draw, false);
 canvas.addEventListener("touchend", stopDrawing, false);
 context.strokeStyle = "#fff";
 context.lineJoin = "round";
-context.lineWidth = 0;
+context.lineWidth = 1;
 	
 
 isDrawing = false;
@@ -58,10 +58,13 @@ socket.on('drawing', function(json){
 
 socket.on('last drawing', function(data){
 	ev_list = JSON.parse(JXG.decompress(data));
+	console.log(ev_list.length);
 	for (var i=0; i<ev_list.length; i++)
 	{
 		drawEvents(ev_list[i].drawing);
 	}
+	$('.progress').remove(); 
+	$('.indeterminate').remove();
 });
 
 function emitLines()
@@ -71,8 +74,9 @@ function emitLines()
 
 function drawEvents(draws_list){
 	context.beginPath();
-	for (var i=0; i < draws_list.length; i++){
-		drawObj(draws_list[i], true);
+	for (var i=0; (draws_list)&&(i < draws_list.length); i++){
+		
+		drawObj(draws_list[i], {reset_path : false});
 	}
 	context.closePath();
 }
@@ -92,8 +96,8 @@ function getXY(e, j_canvas)
 	}
 	return canvasXY;
 }
+
 function startDrawing(e) {
-	// Начинаем рисовать
 	isDrawing = true;
 	canvasXY = getXY(e, $(this));
 	last_XY = canvasXY;
@@ -108,7 +112,7 @@ function Draw(e) {
 		new_XY = getXY(e, $(this));
     	obj = createDrawObj(last_XY, new_XY, curr_color, curr_linejoin, curr_width);
     	last_XY = new_XY;
-    	drawObj(obj);
+    	drawObj(obj, {reset_path : true});
     	lines_for_emit.push(obj);
     	if (lines_for_emit.length == sensetive)
     	{
@@ -140,18 +144,22 @@ function createDrawObj(from, to, color, line_join, line_width)
 	return obj;
 }
 
-function drawObj(obj, reset) {
-	if (!reset){
-		context.beginPath();}
+function drawObj(obj, opts) {
+	console.log(opts);
+	if (opts && opts.reset_path){
+		context.beginPath();
+	}
 
 	context.moveTo(obj.start_x * k_width, obj.start_y * k_height);
 	context.lineTo(obj.end_x * k_width, obj.end_y * k_height);
 	context.strokeStyle = obj.color;
-		context.lineJoin = obj.line_join;
-		context.lineWidth = obj.width;
+	context.lineJoin = obj.line_join;
+	context.lineWidth = obj.width;
 	context.stroke();	
-	if (!reset)
+
+	if (opts && opts.reset_path){
 		context.closePath();	
+	}
 }
 
 

@@ -18,17 +18,25 @@
 .item:hover {background-color: #eaeff4;}
 .item {height: 100px; background-color: white; margin-top: 20px; transition: .2s ease-out;}
 .item img { width: 100px; height: 100px; display: inline-block; float: left; }
-
+.large img { width: 60px; height: 60px; display: inline-block; float: left; margin-left: 20px; margin-top: 20px; border-radius: 3px;}
 .item h5, h6 {
     display: block;
     line-height: 1.3rem;
     width: 100%;
+    text-overflow: ellipsis;
 }
 h5 {
-    font-size: 1.3rem;
     line-height: 110%;
     margin: 0.1rem 0 0.656rem 0;
 }
+.column { overflow: hidden; 
+	text-overflow: ellipsis;}
+.large h5 {
+	margin-top: calc(50px - 0.6rem);
+	margin-left: 100px;
+	text-overflow: ellipsis;
+}
+
 .item .dialog-info { width: calc(100% - 100px - 0.5rem) !important;
 					 line-height: 2rem !important; 
 					 padding-top: 1rem; 
