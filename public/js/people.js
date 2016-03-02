@@ -22,8 +22,17 @@ function create_person(person_data, type){
   var person_name = create_element('a', '')
       person_name.href = '/' + person_data.id;
       person_name.innerHTML =  person_data.full_name;
-  
+
+
+
   card_title.appendChild(person_name);
+  
+  if (person_data.status == 'online'){
+    var st_i = create_element('i', "material-icons");
+    st_i.innerHTML = 'fiber_manual_record';
+    card_title.appendChild(st_i);
+  }
+  
 
   var p_activator = document.createElement('p');
       p_activator.appendChild(create_element('a', 'activator'));
@@ -32,7 +41,7 @@ function create_person(person_data, type){
   p_add_to_frds.className = 'butns'
   if (type != '#friends'){
     if (type == '#friends-requests') {
-      inner = 'class="accept-friendship tool flow-text">Accept</a>' +  '<a name="' + person_data.id + '" class="tool-without-filling reject-friendship"> Reject </a>';
+      inner = 'class="reject-friendship tool-without-filling flow-text">Reject</a>' +  '<a name="' + person_data.id + '" class="tool accept-friendship">Accept</a>';
     }
     else {
       inner =  'class="add-to-friend tool flow-text">Add to friends</a>';

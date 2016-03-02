@@ -14,7 +14,7 @@ function page(req, res, next) {
   }
   else{
     target = url.parse(req.url).path.substring(1);
-    UserModel.findById(target, function(err, target_user) {
+    UserModel.findById(target).exec(function(err, target_user) {
        UserModel.findById(user_id, function(err, user) {
         if(user){
           if (target_user) {
@@ -28,23 +28,25 @@ function page(req, res, next) {
                                           'requests_count' : user.friends_requests.length
                                      },
                                       'tperson' :  {
-                                          'name'        : target_user.full_name,
-                                          'first_name'  : target_user.first_name,
-                                          'last_name'   : target_user.last_name,
-                                          'images'      : target_user.thumb.url,
-                                          'about'       : target_user.about,
-                                          'friends'     : target_user.friends,
-                                          'birthdate'   : target_user.birthdate,
-                                          'homecity'    : target_user.homecity,
-                                          'status'      : target_user.status,
-                                          'about'       : target_user.about,
-                                          'id'          : target_user.id
+                                          'name'            : target_user.full_name,
+                                          'first_name'      : target_user.first_name,
+                                          'last_name'       : target_user.last_name,
+                                          'images'          : target_user.thumb.url,
+                                          'about'           : target_user.about,
+                                          'friends'         : target_user.friends,
+                                          'birthdate'       : target_user.birthdate,
+                                          'homecity'        : target_user.homecity,
+                                          'marital_status'  : target_user.marital_status,
+                                          'about'           : target_user.about,
+                                          'id'              : target_user.id,
+                                          'status'          : target_user.status,
+                                          'last_visit'      : target_user.last_visit
                                       }
 
                                   });
             
           } else {
-            res.send('<h1> Not founded(</h1>');
+            res.send('<h1> Not founded( </h1>');
           }
         }
         else {

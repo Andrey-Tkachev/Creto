@@ -41,7 +41,7 @@
 	function checkLastNameValid()
 	{
 		name = $('#last_name').val();
-		isLastNameValid = /^[A-Za-zА-Яа-я]{1,12}$/i.test(name) || (name.length == 0);
+		isLastNameValid = /^[A-Za-zА-Яа-я ]{1,12}$/i.test(name) || (name.length == 0);
 		if (!isLastNameValid)
 		{
 		  document.getElementById('last-name').setCustomValidity("Not correct last name");
@@ -59,12 +59,12 @@
 	    $.ajax({
 	      type: "POST",
 	      url: "/edit/",
-	      data: { 	first_name	: $("#first-name").val(), 
-	      			last_name	: $("#last-name").val(),
-	      			birthdate	: $('#birthdate').val(),
-	      			homecity    : $('#homecity').val(),
-	      			status      : status,
-	      			about		: $('#about-textarea').val() 
+	      data: { 	first_name		: $("#first-name").val(), 
+	      			last_name		: $("#last-name").val(),
+	      			birthdate		: $('#birthdate').val(),
+	      			homecity    	: $('#homecity').val(),
+	      			marital_status  : status,
+	      			about			: $('#about-textarea').val() 
 	      		},
 
 	      dataType: "json"}).error(function (data)

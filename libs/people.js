@@ -10,7 +10,9 @@ function safe_person(person){
           'about'      : person.about, 
           'thumb'      : person.thumb.url,
           'id'         : person._id,
-          'birthdate'  : person.birthdate}
+          'birthdate'  : person.birthdate,
+          'status'     : person.status,
+          'last_visit' : person.last_visit}
 }
 
 function page(req, res){
@@ -34,7 +36,6 @@ function page(req, res){
 }
 
 function peoples(req, res) {
-  //UserModel.findOne({ _id:null}).remove().exec();
   UserModel.find({})
                 .sort({'first_name': 'asc'})
                 .exec(function (err, users){
@@ -52,11 +53,12 @@ function peoples(req, res) {
 
 function friends(req, res) {
   UserModel.findById(req.session.user_id)
-  .populate({path: 'friends', select: 'thumb first_name last_name full_name about'})
+  .populate({path: 'friends', select: 'thumb first_name last_name full_name about status last_visit'})
   .exec(function(err, user) {
       if (user) {
         friends_list = [];
         for (var i=0; i<user.friends.length; i++){
+
           friends_list.push(safe_person(user.friends[i]));
         }
         res.end(JSON.stringify({status : 200, peoples : JSON.stringify(friends_list)}));
@@ -78,7 +80,7 @@ function requests(req, res) {
 
 friend_request = { 
   request : function (req, res) {
-    log.info('friend request');
+    log.info('Friend request');
     UserModel.findById(req.body.id)
              .exec(function(err, target_user) {
                 if ((target_user) && 
@@ -101,6 +103,7 @@ friend_request = {
                   }
                 else {
                   res.send(JSON.stringify({message : 'duplication request', status: 500}));
+                  log.warning('friendship request duplication');
                 }
             });
 
@@ -108,7 +111,7 @@ friend_request = {
   },
 
   accept  : function (req, res) {
-    log.info('friend accept');
+    log.info('Friend accept');
     if (req.currentUser.friends.indexOf(req.body.id) == -1){
 
       UserModel.findById(req.body.id, function(err, target_user) {   
@@ -116,12 +119,18 @@ friend_request = {
             target_user.friends_requests.remove(req.currentUser); target_user.save();
             req.currentUser.friends_requests.remove(target_user); req.currentUser.save();
 
-            UserModel.update({ _id: req.body.id }, {$pushAll: {friends : [req.currentUser]}}, {upsert:true}, function(err) {
+            UserModel.update({ _id: req.body.id }, 
+                             {$pushAll: {friends : [req.currentUser]}}, 
+                             {upsert:true}, function(err) {
+                
                 if (err){
                  res.sendStatus(500);
+                 log.warning('Cant update user friends list: ' + err.message);
                 }
             });
-            UserModel.update({ _id: req.currentUser.id }, {$pushAll: {friends : [target_user]}}, {upsert:true}, function(err) { 
+            UserModel.update({ _id: req.currentUser.id }, 
+                             {$pushAll: {friends : [target_user]}}, 
+                             {upsert:true}, function(err) { 
               if (err){
                 res.sendStatus(500);
               }
@@ -137,11 +146,12 @@ friend_request = {
   }
   else {
     res.sendStatus(500);
+    log.warning('Users already had frindship conformation');
   }
 
   },
   reject  : function (req, res) {
-    log.info('friend reject');
+    log.info('Friend reject');
     UserModel.findById(req.body.id).exec( function (err, target_user) {
         if (err) {
           res.send(JSON.stringify({status : 500}));
@@ -156,10 +166,11 @@ friend_request = {
 }
 
 function delete_from_friends(req, res) {
-  log.info('delete from friend');
+  log.info('Delete from friend request');
   UserModel.findById(req.body.id).exec( function (err, target_user) {
       if (err) {
         res.send(JSON.stringify({status : 500}));
+        log.warning('Cant delete a friend:' + err.message);
       }
       else { 
         target_user.friends.remove(req.currentUser);

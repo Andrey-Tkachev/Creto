@@ -9,10 +9,10 @@ mongoose.connect(config.get('mongoose:uri'));
 var db = mongoose.connection;
 
 db.on('error', function (err) {
-    log.error('connection error:', err.message);
+    log.error('Connection error:', err.message);
 });
 db.once('open', function callback () {
-    log.info("Connected to DB!");
+    log.info("Connected to " + config.get('mongoose:uri'));
 });
 
 var Schema = mongoose.Schema;
@@ -23,7 +23,6 @@ var Images = new Schema({
     url: { type: String, default: 'images/user.png' }
 });
 
-
 var User = new Schema({
     first_name       : { type: String },
     last_name        : { type: String, default: ""},
@@ -33,11 +32,14 @@ var User = new Schema({
     friends          : [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
     friends_requests : [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
 
-    images           : { type : Images},
-    thumb            : { type : Images, default: {url : 'images/user.png'}},
+    status           : { type: String, default: 'offline'},
+    last_visit       : { type: Date, default: Date.now },
+
+    images           : { type: Images},
+    thumb            : { type: Images, default: {url : 'images/user.png'}},
     birthdate        : { type: String, default: "Not specified"},
     homecity         : { type: String, default: "Not specified"},
-    status           : { type: String, default: "None"},
+    marital_status   : { type: String, default: "None"},
     about            : { type: String, default: "Not specified"},
     salt             : String
 
@@ -88,7 +90,7 @@ var User = new Schema({
 var Room = new Schema({ 
   users         : [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
   creator       : {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-  dialog        : Boolean
+  dialog        : Boolean,
   last_message  : {type: mongoose.Schema.Types.ObjectId, ref: 'Message'}
 });
 

@@ -56,3 +56,8 @@ a.tool:hover {background: #bbccdd; color: #344c66 !important;}
 
 
 .fl {float: left;}
+
+.material-icons {
+    font-size: 14px;
+    padding-left: 0.6rem;
+}

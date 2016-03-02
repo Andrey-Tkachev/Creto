@@ -21,7 +21,7 @@
 
 {% block info_nav_bar %}
   {% parent %}
-  {% set info_message = tperson.name %}
+  {% set info_message = tperson.name + ' ' + tperson.status %}
   {% include "nav_bars/info_nav_bar.html" %}
 {% endblock %}
 
@@ -75,7 +75,7 @@
 
 						<div class="item ">
 					  		<div class="label">Marital status:</div>
-					  		<div class="labeled"><a href="">{{tperson.status}}</a></div>
+					  		<div class="labeled"><a href="">{{tperson.marital_status}}</a></div>
 						</div>
 
 

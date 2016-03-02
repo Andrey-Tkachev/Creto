@@ -13,7 +13,7 @@ var assert            = chai.assert;
 var expect            = chai.expect;
 
 
-var storage           = multer.diskStorage({
+var storage = multer.diskStorage({
       destination: function (req, file, callback) {
         callback(null, global.__approot + '/public/users/' + req.session.user_id);
       },
@@ -26,10 +26,10 @@ var storage           = multer.diskStorage({
 
 var upload = multer({ storage : storage}, {limits : {fieldNameSize : 200}}).single('userPhoto');
 
-
+// WARNING!!!!
 function edit(req, res){
     log.info('Change req');
-    UserModel.update({ _id: req.session.user_id }, { $set: req.body}, 
+    UserModel.update({ _id: req.session.user_id }, { $set: req.body}, // NOT SAFE!!
       function(e) {
         if(e)
         {
@@ -49,15 +49,15 @@ function page(req, res){
         res.render('../public/html/page_edit.html', 
                                         {'self': true,
                                             'person' :  {
-                                              'first_name'  : user.first_name,
-                                              'last_name'   : user.last_name,
-                                              'images'      : user.images.url,
-                                              'about'       : xssFilters.inHTMLData(user.about),
-                                              'friends'     : user.friends,
-                                              'birthdate'   : user.birthdate,
-                                              'homecity'    : xssFilters.inHTMLData(user.homecity),
-                                              'status'      : xssFilters.inHTMLData(user.status),
-                                              'name'        : user.full_name
+                                              'first_name'      : user.first_name,
+                                              'last_name'       : user.last_name,
+                                              'images'          : user.images.url,
+                                              'about'           : xssFilters.inHTMLData(user.about),
+                                              'friends'         : user.friends,
+                                              'birthdate'       : user.birthdate,
+                                              'homecity'        : xssFilters.inHTMLData(user.homecity),
+                                              'marital_status'  : xssFilters.inHTMLData(user.marital_status),
+                                              'name'            : user.full_name
                                             }
                                         });
       }
