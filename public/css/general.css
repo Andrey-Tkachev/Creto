@@ -19,7 +19,7 @@ html { overflow: auto; background-color: rgba(40, 74, 103, 0.1);}
 .portrait .full-on-portrait-tablet {
 		display: block !important;
 		width: 100% !important;
-		padding: 0;
+		padding: 0 !important;
 	}
 
 

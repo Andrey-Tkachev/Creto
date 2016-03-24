@@ -8,7 +8,7 @@ html { overflow: auto; background-color: rgba(165, 168, 179, 0.07);}
 	.portrait .full-on-portrait-tablet .column   { display:block; padding-right: 0px; padding-left: 0px; }
 
 #draw-content { overflow: auto; }
-#canvas-container { padding-top:  7%; }
+#canvas-container { padding-top:  3%; }
 
 #chat-content .content-row { min-width: 295px; z-index: 0;}
 #chat-content .low { min-height: 120px !important; }
@@ -53,12 +53,13 @@ body {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   color: #434651;
-  background: rgba(2, 14, 41, 0.04);
+  background: #fff;
 }
 .chat .chat-header {
   padding: 20px;
   border-bottom: 2px solid #eef1f3;
-  background: #eef1f3; 
+  background: #eef1f3;
+  z-index: 1; 
 }
 .chat .chat-header img {
   float: left;
@@ -97,11 +98,12 @@ body {
   padding-left: 6px;
 }
 .chat .chat-history .message {
-  color: white;
+  color: #576065;
+  z-index: 0;
   padding: 18px 20px;
   line-height: 26px;
   font-size: 18px;
-  border-radius: 7px;
+  border-radius: 20px;
   margin-bottom: 30px;
   width: 90%;
   position: relative;
@@ -115,18 +117,18 @@ body {
   width: 0;
   position: absolute;
   pointer-events: none;
-  border-bottom-color: #67a5a4;
+  border-bottom-color: #F2F4F6;
   border-width: 10px;
   margin-left: -10px;
 }
 .chat .chat-history .my-message {
-  background: #8BC6B6;
+  background: #F2F4F6;
 }
 .chat .chat-history .other-message {
-  background: #85aed5;
+  background: #E7F1FF;
 }
 .chat .chat-history .other-message:after {
-  border-bottom-color: #85aed5;
+  border-bottom-color: #E7F1FF;
   left: 93%;
 }
 .chat .chat-message {
@@ -179,7 +181,7 @@ textarea:focus { border-bottom: 1px solid rgb(169, 169, 169)!important; box-shad
 }
 
 .offline {
-  color: #1f443b;
+  color: #376979;
 }
 
 .me {

@@ -1,185 +1,242 @@
-canvas = document.getElementById("art_canvas");
-context = canvas.getContext("2d");
-canvas_width = canvas.width;
-canvas_height = canvas.height;
+canva = {
+	canvas         : null,
+	context        : null,
+	socket         : null,
+	sensetive      : 6,
+	lastXY 		   : { x: 0, 
+					   y: 0 },
+	isDrawing      : false,
+	linesForEmit: [],
 
-if (canvas_width < device_width)
-{
-	k_width = 1;
-	k_height = 1;
+	lineStyle: {
+		strokeStyle : "#fff",
+		lineJoin    : "mitter",
+		lineWidth   : 2
+	},
 
-}
-else
-{
-	console.log('Resizing..');
-	k_width = device_width / canvas_width;
-	k_height = device_height / canvas_height;
-	canvas.width = device_width;
-	canvas.height = device_height;
-}
+	init: function(socket, device_scale, sensetive) {
+	  this.device_scale = device_scale;
+	  if (sensetive)
+	  	this.sensetive = sensetive;  
+	  this.cacheDOM();
+	  this.adaptScale();
+	  this.initPallete();
+	  this.socket = socket;
+      this.bindEvents();
 
-canvas_width = device_width;
-canvas_heidth = device_height;
+	},
 
-canvas.onmousedown = startDrawing;
-canvas.onmouseup = stopDrawing;
-canvas.onmouseout = stopDrawing;
-canvas.onmousemove = Draw;
+	cacheDOM: function() {
+	  this.canvas  = document.getElementById("art_canvas");
+	  this.context = this.canvas.getContext("2d");
+	  
+	  this.$canvas    = $("#art_canvas");
+      this.$size_btn  = $('.change-size-btn');
+      this.$color_btn = $('.change-color-btn');
+      this.$clear_btn = $('#clear-btn');
+    },
 
-canvas.addEventListener("touchstart", startDrawing, false);
-canvas.addEventListener("touchmove", Draw, false);
-canvas.addEventListener("touchend", stopDrawing, false);
-context.strokeStyle = "#fff";
-context.lineJoin = "round";
-context.lineWidth = 1;
-	
+	bindEvents: function() {
+	  this.$size_btn.on('click', this.changeSize.bind(this));
+	  this.$clear_btn.on('click', this.clearCanvas.bind(this, {push_change: true}));
+	  
+	  this.canvas.onmousedown = this.startDrawing.bind(this);
+	  this.canvas.onmouseup   = this.stopDrawing.bind(this);
+	  this.canvas.onmouseout  = this.stopDrawing.bind(this);
+	  this.canvas.onmousemove = this.Draw.bind(this);
 
-isDrawing = false;
-sensetive = 6;
-curr_color = '#fff';
-curr_linejoin = "miter";
-curr_width = 2;
+	  this.canvas.addEventListener("touchstart", this.startDrawing.bind(this), false);
+	  this.canvas.addEventListener("touchmove", this.Draw.bind(this), false);
+	  this.canvas.addEventListener("touchend", this.stopDrawing.bind(this), false);
 
-last_XY = {x:0, y:0};
-lines_for_emit = [];
+	  this.socket.on('clear',    this.clearCanvas.bind(this, {push_change: false}));
+	  this.socket.on('drawing',  this.drawObj.bind(this));
+	  global_this = this;
+	  this.socket.on('last drawing', function(data){
+									ev_list = JSON.parse(JXG.decompress(data));
+									for (var i=0; i<ev_list.length; i++)
+									{
+										global_this.drawObj(ev_list[i].drawing);
+									}
+									$('.progress').remove(); 
+									$('.indeterminate').remove();
+								});
+	},
 
-
-//socket.emit('last drawing', 'all');
-
-
-socket.on('clear', function(json){
-	console.log('clear event');
-	context.clearRect(0, 0, canvas.width, canvas.height);
-});
-
-socket.on('drawing', function(json){
-	drawEvents(json);
-});
-
-socket.on('last drawing', function(data){
-	ev_list = JSON.parse(JXG.decompress(data));
-	console.log(ev_list.length);
-	for (var i=0; i<ev_list.length; i++)
-	{
-		drawEvents(ev_list[i].drawing);
-	}
-	$('.progress').remove(); 
-	$('.indeterminate').remove();
-});
-
-function emitLines()
-{
-	socket.emit('drawing', lines_for_emit);
-}
-
-function drawEvents(draws_list){
-	context.beginPath();
-	for (var i=0; (draws_list)&&(i < draws_list.length); i++){
+	adaptScale: function(){
+		device_width = this.device_scale.device_width;
+		device_height = this.device_scale.device_height;
+		canvas_width  = this.canvas.width;
+		canvas_height = this.canvas.height;
 		
-		drawObj(draws_list[i], {reset_path : false});
-	}
-	context.closePath();
-}
+		this.width_ratio  = 1;
+		this.height_ratio = 1;
+		
+		if (canvas_width > device_width)
+		{
+			this.width_ratio  = device_width / canvas_width;
+			this.height_ratio = device_height / canvas_height;
+			this.canvas.width  = device_width;
+			this.canvas.height = device_height;
+		}
+	},
 
-function getXY(e, j_canvas)
-{
-	canvasXY = {x:0, y:0};
-	if ((e.type == 'touchstart') || (e.type == 'touchmove'))
+    initPallete: function() {
+    	color_btn = this.$color_btn;
+    	size_btn  = this.$size_btn;
+    	global_this = this;
+    	this.$color_btn.spectrum({
+		    showPalette: true,
+		    showSelectionPalette: true,
+		    clickoutFiresChange: true,
+		    showInitial: true,
+		    //showInput: true,
+		    allowEmpty:true,
+		    preferredFormat: "hex",
+		    palette: [
+		        ['red', 'yellow', 'green', 'blue', 'black', 'white'],
+		    ],
+		    //showAlpha: true,
+		    change: function(color) {
+		    	color = color.toHexString(); 
+		    	global_this.lineStyle.strokeStyle = color;
+
+				color_btn.css('background-color', color);
+				size_btn.css('background-color', color);
+			}
+		});
+    },
+    
+    getXY: function(e, $canvas)
 	{
-		canvasXY.x = e.targetTouches[0].pageX  - j_canvas.offset().left;
-		canvasXY.y = e.targetTouches[0].pageY  - j_canvas.offset().top;
-	}
-	else
+
+		canvasXY = {x:0, y:0};
+		if ((e.type == 'touchstart') || (e.type == 'touchmove'))
+		{
+			canvasXY.x = e.targetTouches[0].pageX  - $canvas.offset().left;
+			canvasXY.y = e.targetTouches[0].pageY  - $canvas.offset().top;
+		}
+		else
+		{
+			canvasXY.x = e.pageX - $canvas.offset().left;
+			canvasXY.y = e.pageY - $canvas.offset().top;
+		}
+		return canvasXY;
+	},
+
+	startDrawing: function(e) {
+		this.isDrawing = true;
+		canvasXY = this.getXY(e, this.$canvas);
+
+		this.last_XY = canvasXY;
+		
+		this.context.beginPath();
+		this.context.moveTo (canvasXY.x * this.width_ratio, 
+							 canvasXY.y * this.height_ratio);
+	},
+
+	Draw: function(e) {
+
+		if (e && e.preventDefault) { e.preventDefault(); }
+		if (e && e.stopPropagation) { e.stopPropagation(); }
+		
+		if (this.isDrawing == true)
+		{	
+
+			new_XY = this.getXY(e, this.$canvas);
+	    	obj = this.createDrawObj(this.last_XY, 
+	    							 new_XY, 
+	    							{ style: this.lineStyle,
+	    							  ratio: 
+									     {
+									     	width_ratio : this.width_ratio,
+									    	height_ratio: this.height_ratio
+									     }});
+
+	    	
+	    	this.last_XY = new_XY;
+
+	    	this.context.lineTo(obj.end_x * this.width_ratio, 
+	    						obj.end_y * this.height_ratio);
+
+	    	this.context.strokeStyle = this.lineStyle.strokeStyle;
+			this.context.lineJoin 	 = this.lineStyle.lineJoin;
+			this.context.lineWidth 	 = this.lineStyle.lineWidth;
+			this.context.stroke();
+		
+	    	this.linesForEmit.push(obj);
+	    	if (this.linesForEmit.length == this.sensetive)
+	    	{
+	    		this.emitLines();
+	    		this.linesForEmit = [];
+	    	}
+		}
+	},
+
+	stopDrawing: function() {
+		this.context.closePath();
+		this.isDrawing = false;	
+		if (this.linesForEmit.length != 0){
+			this.emitLines();
+	   		this.linesForEmit = [];
+	    }
+	},
+
+	createDrawObj: function(from, to, params)
 	{
-		canvasXY.x = e.pageX - j_canvas.offset().left;
-		canvasXY.y = e.pageY - j_canvas.offset().top;
-	}
-	return canvasXY;
-}
+		obj = {
+			start_x : from.x / params.ratio.width_ratio,
+			start_y : from.y / params.ratio.height_ratio,
+			end_x   : to.x / params.ratio.width_ratio,
+			end_y   : to.y / params.ratio.height_ratio,
+			color     : params.style.strokeStyle,
+			line_join : params.style.lineJoin,
+			width     : params.style.lineWidth,
+		}
 
-function startDrawing(e) {
-	isDrawing = true;
-	canvasXY = getXY(e, $(this));
-	last_XY = canvasXY;
-}
+		return obj;
+	},
 
-function Draw(e) {
-	if (e && e.preventDefault) { e.preventDefault(); }
-	if (e && e.stopPropagation) { e.stopPropagation(); }
-	
-	if (isDrawing == true)
-	{	
-		new_XY = getXY(e, $(this));
-    	obj = createDrawObj(last_XY, new_XY, curr_color, curr_linejoin, curr_width);
-    	last_XY = new_XY;
-    	drawObj(obj, {reset_path : true});
-    	lines_for_emit.push(obj);
-    	if (lines_for_emit.length == sensetive)
-    	{
-    		emitLines();
-    		lines_for_emit = [];
-    	}
-	}
-}
+	drawObj: function(objs, opts) {
 
-function stopDrawing() {
-	isDrawing = false;	
-	if (lines_for_emit.length != 0){
-		emitLines();
-   		lines_for_emit = [];
-    }
-}
+		path = new Path2D();
+		path.moveTo(objs[0].start_x * this.width_ratio, 
+			objs[0].start_y * this.height_ratio);
 
-function createDrawObj(from, to, color, line_join, line_width)
-{
-	obj = {
-		start_x : from.x / k_width,
-		start_y : from.y / k_height,
-		end_x : to.x / k_width,
-		end_y  : to.y / k_height,
-		color : color,
-		line_join : line_join,
-		width : line_width
-	}
-	return obj;
-}
+	    for (var i=0; objs&&(i < objs.length); i++){
+	    	obj = objs[i];
+			path.lineTo(obj.end_x * this.width_ratio, 
+						obj.end_y * this.height_ratio);
+		}
+		
+		this.context.strokeStyle = obj.color;
+		this.context.lineJoin 	 = obj.line_join;
+		this.context.lineWidth 	 = obj.width;
 
-function drawObj(obj, opts) {
-	console.log(opts);
-	if (opts && opts.reset_path){
-		context.beginPath();
-	}
+		this.context.stroke(path);	
+	},
 
-	context.moveTo(obj.start_x * k_width, obj.start_y * k_height);
-	context.lineTo(obj.end_x * k_width, obj.end_y * k_height);
-	context.strokeStyle = obj.color;
-	context.lineJoin = obj.line_join;
-	context.lineWidth = obj.width;
-	context.stroke();	
+    changeSize: function(event){
+    	console.log('Resizing');
+		this.lineStyle.lineWidth = parseInt(event.target.name);
+		this.context.lineWidth = this.lineStyle.lineWidth;
+	},
 
-	if (opts && opts.reset_path){
-		context.closePath();	
-	}
-}
+	clearCanvas: function(params) {
+		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+		if ((params) && (params.push_change)){
+			this.socket.emit('clear', '');
+		}
+	},
 
-
-$('.change-color-btn').click(function(e)
-	{	
-		context.strokeStyle = '#' + this.id;
-		curr_color = '#' + this.id;
-		$('.change-size-btn').css('background-color', '#' + this.id);
-		$('#color-btn').css('background-color', '#' + this.id);
-	});
-
-$('#clear-btn').click(function()
+	emitLines: function()
 	{
-		context.clearRect(0, 0, canvas.width, canvas.height);
-		socket.emit('clear', '');
-	});
+		this.socket.emit('drawing', this.linesForEmit);
+	}
+}
 
-$('.change-size-btn').click(function()
-	{
-		curr_width = parseInt(this.id.substring(5));
-		context.lineWidth = parseInt(this.id.substring(5));
-	});
 
+device_scale = { device_width  : device_width, 
+				 device_height : device_height }
+sensetive = 12;
+canva.init(socket, device_scale, sensetive);
