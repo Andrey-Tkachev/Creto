@@ -44,7 +44,23 @@ function page(req, res, next) {
     res.render('../public/html/login_form.html', {});
 }
 
+function load_user(req, res, next) {
+  if (req.session.user_id) {
+    UserModel.findById(req.session.user_id, function(err, user) {
+      if (user) {
+        req.currentUser = user;
+        next();
+      } else {
+        res.redirect('/auth/login/');
+      }
+    });
+  } else {
+    res.redirect('/auth/login/');
+  }
+}
 
+
+module.exports.load_user = load_user;
 module.exports.authorize = authorize;
 module.exports.logout    = logout;
 module.exports.page      = page;

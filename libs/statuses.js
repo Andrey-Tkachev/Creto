@@ -7,6 +7,7 @@ function update_status(user, new_status){
 		UserModel.update({_id : user.id}, {$set : {status : new_status, last_visit: Date()}}, {upsert:true}, function(err){});
 	}
 	else{
+		console.log('User ', user.email, ' offline');
 		UserModel.update({_id : user.id}, {$set : {status : new_status}}, {}, function(err){});
 	}
 

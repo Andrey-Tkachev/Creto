@@ -85,4 +85,4 @@ function update_status(){
     console.log('status updated')
   });
 }
-var updater_timerID = setInterval(update_status, 60 * 60 * 10 * 1000);
+var updater_timerID = setInterval(update_status, 60 * 5 * 100);

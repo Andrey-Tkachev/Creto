@@ -5,13 +5,14 @@
   <link type="text/css" rel="stylesheet" href="css/general.css"  media="screen,projection"/>
   <link type="text/css" rel="stylesheet" href="css/room.css"  media="screen,projection"/>
   <link type="text/css" rel='stylesheet' href='css/spectrum.css' />
+  <link type="text/css" rel='stylesheet' href='css/size-picker.css' />
   <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css'>
 {% endblock %}
 
 {% block scripts_links %}
   {% parent %}
   
-  
+  <script type="text/javascript" src='js/sizeum.js' defer></script>
   <script type="text/javascript" src='js/spectrum.js' defer></script>
   <script type="text/javascript" src="js/main.js" defer></script>
   <script type="text/javascript" src='/js/jsxcompressor.min.js' defer></script>
@@ -69,16 +70,10 @@
                       </div>
                       
 
-                      <div class="fixed-action-btn vertical tool">
-                        <a class="btn-floating btn-large orange">
+                      <div class="fixed-action-btn tool">
+                        <a class="btn-floating btn-large change-size-btn orange">
                           <i class="large material-icons">view_day</i>
                         </a>
-                        <ul>
-                          <li><a name='25'class="change-size-btn btn-floating large"></a></li>
-                          <li><a name='15' class="change-size-btn btn-floating medium"></a></li>
-                          <li><a name='9' class="change-size-btn btn-floating small"></a></li>
-                          <li><a name='2' class="change-size-btn btn-floating tiny"></a></li>
-                        </ul>
                       </div>
 
                       <div class="fixed-action-btn vertical tool">
@@ -156,12 +151,4 @@
 
     <audio id="chatAudio"><source src="audio/notify1.mp3" type="audio/mpeg"></audio>
 {% endblock %}
-
-<ul>
-                          <li><a id='e53935' class="change-color-btn btn-floating red"><i class="material-icons"></i></a></li>
-                          <li><a id='ffeb3b' class="change-color-btn btn-floating yellow darken-1"><i class="material-icons"></i></a></li>
-                          <li><a id='4caf50' class="change-color-btn btn-floating green"><i class="material-icons"></i></a></li>
-                          <li><a id='1e88e5' class="change-color-btn btn-floating blue"><i class="material-icons"></i></a></li>
-                          <li><a id='000000' class="change-color-btn btn-floating black"><i class="material-icons"></i></a></li>
-                          <li><a id='ffffff' class="change-color-btn btn-floating white"><i class="material-icons"></i></a></li>
-                        </ul>
+s
