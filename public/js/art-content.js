@@ -3,10 +3,14 @@ canva = {
 	context        : null,
 	socket         : null,
 	sensetive      : 6,
+	deviceScale    : { width: 1920,
+					   height: 1080 },
+
 	lastXY 		   : { x: 0, 
 					   y: 0 },
+
 	isDrawing      : false,
-	linesForEmit: [],
+	linesForEmit   : [],
 
 	lineStyle: {
 		strokeStyle : "#fff",
@@ -14,10 +18,13 @@ canva = {
 		lineWidth   : 2
 	},
 
-	init: function(socket, device_scale, sensetive) {
-	  this.device_scale = device_scale;
-	  if (sensetive)
-	  	this.sensetive = sensetive;  
+	init: function(socket, params) {
+	  if (params.device_scale)
+	  	this.deviceScale = params.device_scale;
+
+	  if (params.sensetive)
+	  	this.sensetive = params.sensetive;  
+	  
 	  this.cacheDOM();
 	  this.adaptScale();
 	  this.initPallete();
@@ -30,14 +37,25 @@ canva = {
 	  this.canvas  = document.getElementById("art_canvas");
 	  this.context = this.canvas.getContext("2d");
 	  
+	  this.$clear_btn = $('#clear-btn');
 	  this.$canvas    = $("#art_canvas");
       this.$size_btn  = $('.change-size-btn');
-      this.$color_btn = $('.change-color-btn');
-      this.$clear_btn = $('#clear-btn');
+      this.$color_btn = $('.change-color-btn');     
     },
 
 	bindEvents: function() {
-	  this.$size_btn.on('click', this.changeSize.bind(this));
+	global_this = this;
+	  this.$size_btn.sizeum({
+	  	change: function(size)
+	  	{
+	  		global_this.lineStyle.lineWidth = size;
+	  	},
+	  	min: 0,
+	  	max: 50,
+	  	selectedSize: 2
+	  });
+
+	  //this.$size_btn.on('click', this.changeSize.bind(this));
 	  this.$clear_btn.on('click', this.clearCanvas.bind(this, {push_change: true}));
 	  
 	  this.canvas.onmousedown = this.startDrawing.bind(this);
@@ -51,21 +69,12 @@ canva = {
 
 	  this.socket.on('clear',    this.clearCanvas.bind(this, {push_change: false}));
 	  this.socket.on('drawing',  this.drawObj.bind(this));
-	  global_this = this;
-	  this.socket.on('last drawing', function(data){
-									ev_list = JSON.parse(JXG.decompress(data));
-									for (var i=0; i<ev_list.length; i++)
-									{
-										global_this.drawObj(ev_list[i].drawing);
-									}
-									$('.progress').remove(); 
-									$('.indeterminate').remove();
-								});
+	  this.socket.on('last drawing', this.drawHistory.bind(this));
 	},
 
 	adaptScale: function(){
-		device_width = this.device_scale.device_width;
-		device_height = this.device_scale.device_height;
+		device_width = this.deviceScale.width;
+		device_height = this.deviceScale.height;
 		canvas_width  = this.canvas.width;
 		canvas_height = this.canvas.height;
 		
@@ -109,7 +118,6 @@ canva = {
     
     getXY: function(e, $canvas)
 	{
-
 		canvasXY = {x:0, y:0};
 		if ((e.type == 'touchstart') || (e.type == 'touchmove'))
 		{
@@ -182,6 +190,15 @@ canva = {
 	    }
 	},
 
+	drawHistory: function(data) {
+		events = JSON.parse(JXG.decompress(data));
+		for (var i=0; i<events.length; i++)
+			this.drawObj(events[i].drawing);
+
+		$('.progress').remove(); 
+		$('.indeterminate').remove();
+	},
+
 	createDrawObj: function(from, to, params)
 	{
 		obj = {
@@ -197,8 +214,8 @@ canva = {
 		return obj;
 	},
 
-	drawObj: function(objs, opts) {
-
+	// Draw sequence of lines
+	drawObj: function(objs) {
 		path = new Path2D();
 		path.moveTo(objs[0].start_x * this.width_ratio, 
 			objs[0].start_y * this.height_ratio);
@@ -216,14 +233,16 @@ canva = {
 		this.context.stroke(path);	
 	},
 
+	// Size of lines
     changeSize: function(event){
-    	console.log('Resizing');
 		this.lineStyle.lineWidth = parseInt(event.target.name);
 		this.context.lineWidth = this.lineStyle.lineWidth;
 	},
 
 	clearCanvas: function(params) {
 		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+		// Push, if it is a loacal event
 		if ((params) && (params.push_change)){
 			this.socket.emit('clear', '');
 		}
@@ -236,7 +255,11 @@ canva = {
 }
 
 
-device_scale = { device_width  : device_width, 
-				 device_height : device_height }
-sensetive = 12;
-canva.init(socket, device_scale, sensetive);
+params = {  
+			device_scale: { width  : device_width, 
+				 			height : device_height },
+			sensetive: 12
+		 }
+
+// Canvas initialization
+canva.init(socket, params);

@@ -1,0 +1,34 @@
+#size-picker-container {
+	width: 700px;
+	
+	margin-top: 20px;
+	background: #F9F9F9;
+	
+	overflow-x: hidden;
+	z-index: 5;
+}
+.range-field {
+    position: static;
+}
+.size-form {
+	height: 60px;
+	margin-top: 30%;
+	margin-left: 20%;
+	position: absolute;
+}
+input[type=range] {
+    border: none;
+}
+
+input[type=range] + .thumb {
+    border: none;
+    background-color: #0091ea;
+}
+
+.si-hidden {
+	display: none;
+}
+
+.si-active {
+	display: block;
+}
